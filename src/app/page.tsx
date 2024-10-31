@@ -1,9 +1,12 @@
+"use client";
+
 import PageContainer from "@/components/ui/page-container";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import Dashboard from "@/components/layout/dashboard";
 import Profile from "@/components/layout/profile";
+import { CreateAuctionDialog } from "@/components/ui/create-auction-dialog";
+import { useState } from "react";
+import { useAccount } from "wagmi";
 
 export default function Home() {
   return (
@@ -16,9 +19,7 @@ export default function Home() {
                 <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
                 <TabsTrigger value="profile">Profile</TabsTrigger>
               </TabsList>
-              <Button className="py-2 px-5 bg-black text-white font-light rounded-xl hover:bg-black/70 hover:scale-105 transition ease-in-out disabled:bg-black-opacity-30">
-                Create Auction
-              </Button>
+              <CreateAuctionDialog />
             </div>
             <TabsContent value="dashboard" className="space-y-4">
               <Dashboard />
