@@ -9,6 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { PacmanLoader } from "react-spinners";
 
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -16,12 +17,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "./form";
+import { useWriteContract } from "wagmi";
+import { AUCTIONEER_CONTRACT_ADDRESS } from "@/lib/constants";
+import AuctioneerAbi from "@/abis/AuctioneerAbi";
+import { useToast } from "@/hooks/useToast";
+import { useState } from "react";
 
 const createAuctionSchema = z.object({
   _name: z.string().min(1, {
@@ -30,16 +35,16 @@ const createAuctionSchema = z.object({
   _symbol: z.string().min(1, {
     message: "Token symbol is required.",
   }),
-  _totalSupply: z.number().min(1, {
+  _totalSupply: z.coerce.number().positive({
     message: "Total supply is required.",
   }),
-  _initialPrice: z.number().min(1, {
+  _initialPrice: z.coerce.number().positive({
     message: "Initial price is required.",
   }),
-  _reservePrice: z.number().min(1, {
+  _reservePrice: z.coerce.number().positive({
     message: "Reserve price is required.",
   }),
-  _minimumBid: z.number().min(1, {
+  _minimumBid: z.coerce.number().positive({
     message: "Minimum bid is required.",
   }),
 });
@@ -57,8 +62,48 @@ export function CreateAuctionDialog() {
     },
   });
 
-  const onSubmit = (data: z.infer<typeof createAuctionSchema>) => {
+  const { toast } = useToast();
+
+  const { writeContractAsync } = useWriteContract();
+
+  const [loading, setLoading] = useState(false);
+
+  const onSubmit = async (data: z.infer<typeof createAuctionSchema>) => {
     console.log(data);
+
+    try {
+      setLoading(true);
+      const tx = await writeContractAsync({
+        address: AUCTIONEER_CONTRACT_ADDRESS,
+        abi: AuctioneerAbi,
+        functionName: "createAuction",
+        args: [
+          data._name,
+          data._symbol,
+          BigInt(data._totalSupply),
+          BigInt(data._initialPrice * 1e18),
+          BigInt(data._reservePrice * 1e18),
+          BigInt(data._minimumBid * 1e18),
+        ],
+      });
+
+      console.log(tx);
+
+      toast({
+        variant: "default",
+        title: "Success!",
+        description: "Auction created successfully.",
+      });
+    } catch (error) {
+      console.log(error);
+      toast({
+        variant: "destructive",
+        title: "Error!",
+        description: "An error occurred while creating the auction.",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -77,7 +122,8 @@ export function CreateAuctionDialog() {
             Create Auction
           </DialogTitle>
           <DialogDescription className="text-gray-500">
-            Enter the details of the auction you want to create.
+            Enter the details of the auction you want to create. <br />
+            Creating an auction will mint the token and initialise the auction.
           </DialogDescription>
         </DialogHeader>
         <Form {...auctionForm}>
@@ -139,13 +185,7 @@ export function CreateAuctionDialog() {
                           placeholder="1000000"
                           className="rounded-lg [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                           {...field}
-                          onChange={(e) =>
-                            field.onChange(
-                              e.target.value === ""
-                                ? undefined
-                                : Number(e.target.value)
-                            )
-                          }
+                          onChange={(e) => field.onChange(e.target.value)}
                         />
                       </FormControl>
                       <FormMessage />
@@ -165,16 +205,11 @@ export function CreateAuctionDialog() {
                       <FormControl>
                         <Input
                           type="number"
+                          step="0.000000000000000001"
                           placeholder="0.1"
                           className="rounded-lg [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                           {...field}
-                          onChange={(e) =>
-                            field.onChange(
-                              e.target.value === ""
-                                ? undefined
-                                : Number(e.target.value)
-                            )
-                          }
+                          onChange={(e) => field.onChange(e.target.value)}
                         />
                       </FormControl>
                       <FormMessage />
@@ -192,16 +227,11 @@ export function CreateAuctionDialog() {
                       <FormControl>
                         <Input
                           type="number"
+                          step="0.000000000000000001"
                           placeholder="0.05"
                           className="rounded-lg [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                           {...field}
-                          onChange={(e) =>
-                            field.onChange(
-                              e.target.value === ""
-                                ? undefined
-                                : Number(e.target.value)
-                            )
-                          }
+                          onChange={(e) => field.onChange(e.target.value)}
                         />
                       </FormControl>
                       <FormMessage />
@@ -219,19 +249,17 @@ export function CreateAuctionDialog() {
                       <FormControl>
                         <Input
                           type="number"
+                          step="0.000000000000000001"
                           placeholder="0.01"
                           className="rounded-lg [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                           {...field}
-                          onChange={(e) =>
-                            field.onChange(
-                              e.target.value === ""
-                                ? undefined
-                                : Number(e.target.value)
-                            )
-                          }
+                          onChange={(e) => field.onChange(e.target.value)}
                         />
                       </FormControl>
                       <FormMessage />
+                      <p className="text-xs text-gray-500">
+                        Must be greater than or equal to reserve price
+                      </p>
                     </FormItem>
                   )}
                 />
@@ -241,8 +269,16 @@ export function CreateAuctionDialog() {
               <Button
                 type="submit"
                 className="w-full bg-black hover:bg-black/80 text-white rounded-lg py-2"
+                disabled={loading}
               >
-                Create Auction
+                {loading ? (
+                  <>
+                    Creating Auction...
+                    <PacmanLoader size={10} color="#FFFFFF" />
+                  </>
+                ) : (
+                  "Create Auction"
+                )}
               </Button>
             </DialogFooter>
           </form>

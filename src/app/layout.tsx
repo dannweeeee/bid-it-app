@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/layout/navbar";
 import ContextProvider from "@/context";
 import { headers } from "next/headers";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,8 +27,11 @@ export default function RootLayout({
         suppressHydrationWarning={true}
       >
         <ContextProvider cookies={cookies}>
-          <Navbar />
-          {children}
+          <main className="min-h-screen">
+            <Navbar />
+            {children}
+            <Toaster />
+          </main>
         </ContextProvider>
       </body>
     </html>
