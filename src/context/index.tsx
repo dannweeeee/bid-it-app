@@ -17,18 +17,20 @@ const metadata = {
   name: "Bid It",
   description: "Dutch Auction for Token ICOs",
   url: "http://localhost:3000",
-  icons: ["https://avatars.githubusercontent.com/u/179229932"],
+  icons: [
+    "https://github.com/dannweeeee/bid-it-app/blob/main/public/assets/bidit-icon-no-bg.png?raw=true",
+  ],
 };
 
 // Create the modal
-const modal = createAppKit({
+export const modal = createAppKit({
   adapters: [wagmiAdapter],
   projectId,
   networks: [mainnet, arbitrum],
   defaultNetwork: mainnet,
   metadata: metadata,
   features: {
-    analytics: true, // Optional - defaults to your Cloud configuration
+    analytics: true,
   },
 });
 
