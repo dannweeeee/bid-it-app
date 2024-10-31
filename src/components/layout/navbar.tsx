@@ -1,7 +1,6 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import ConnectButton from "../ui/connect-button";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 export default function Navbar() {
   return (
@@ -43,7 +42,11 @@ export default function Navbar() {
             </Link>
           </nav>
           <div className="flex items-center">
-            <ConnectButton />
+            <ConnectButton
+              chainStatus={"full"}
+              showBalance={true}
+              accountStatus={"full"}
+            />
           </div>
         </div>
       </div>
