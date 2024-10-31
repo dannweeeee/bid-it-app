@@ -64,7 +64,13 @@ export default [
   {
     type: "function",
     name: "bid",
-    inputs: [],
+    inputs: [
+      {
+        name: "_quantity",
+        type: "uint256",
+        internalType: "uint256",
+      },
+    ],
     outputs: [],
     stateMutability: "payable",
   },
@@ -80,6 +86,25 @@ export default [
     ],
     outputs: [],
     stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "calculatePrice",
+    inputs: [
+      {
+        name: "_quantity",
+        type: "uint256",
+        internalType: "uint256",
+      },
+    ],
+    outputs: [
+      {
+        name: "",
+        type: "uint256",
+        internalType: "uint256",
+      },
+    ],
+    stateMutability: "view",
   },
   {
     type: "function",
@@ -626,6 +651,16 @@ export default [
   },
   {
     type: "error",
+    name: "InvalidPrice",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "NotEnoughTokens",
+    inputs: [],
+  },
+  {
+    type: "error",
     name: "NothingToClaim",
     inputs: [],
   },
@@ -650,6 +685,11 @@ export default [
         internalType: "address",
       },
     ],
+  },
+  {
+    type: "error",
+    name: "PriceNotMet",
+    inputs: [],
   },
   {
     type: "error",
