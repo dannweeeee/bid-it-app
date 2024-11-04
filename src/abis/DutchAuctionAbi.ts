@@ -32,12 +32,30 @@ export default [
         type: "uint256",
         internalType: "uint256",
       },
+      {
+        name: "_owner",
+        type: "address",
+        internalType: "address",
+      },
     ],
     stateMutability: "nonpayable",
   },
   {
     type: "function",
     name: "AUCTION_DURATION",
+    inputs: [],
+    outputs: [
+      {
+        name: "",
+        type: "uint256",
+        internalType: "uint256",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "BATCH_SIZE",
     inputs: [],
     outputs: [
       {
@@ -63,6 +81,19 @@ export default [
   },
   {
     type: "function",
+    name: "automationRegistry",
+    inputs: [],
+    outputs: [
+      {
+        name: "",
+        type: "address",
+        internalType: "address",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
     name: "bid",
     inputs: [
       {
@@ -76,16 +107,22 @@ export default [
   },
   {
     type: "function",
-    name: "bulkClaimTokens",
+    name: "bidders",
     inputs: [
       {
-        name: "_bidders",
-        type: "address[]",
-        internalType: "address[]",
+        name: "",
+        type: "uint256",
+        internalType: "uint256",
       },
     ],
-    outputs: [],
-    stateMutability: "nonpayable",
+    outputs: [
+      {
+        name: "",
+        type: "address",
+        internalType: "address",
+      },
+    ],
+    stateMutability: "view",
   },
   {
     type: "function",
@@ -108,10 +145,27 @@ export default [
   },
   {
     type: "function",
-    name: "claimTokens",
-    inputs: [],
-    outputs: [],
-    stateMutability: "nonpayable",
+    name: "checkUpkeep",
+    inputs: [
+      {
+        name: "",
+        type: "bytes",
+        internalType: "bytes",
+      },
+    ],
+    outputs: [
+      {
+        name: "upkeepNeeded",
+        type: "bool",
+        internalType: "bool",
+      },
+      {
+        name: "performData",
+        type: "bytes",
+        internalType: "bytes",
+      },
+    ],
+    stateMutability: "view",
   },
   {
     type: "function",
@@ -123,6 +177,19 @@ export default [
         internalType: "address",
       },
     ],
+    outputs: [
+      {
+        name: "",
+        type: "uint256",
+        internalType: "uint256",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "currentClaimIndex",
+    inputs: [],
     outputs: [
       {
         name: "",
@@ -258,6 +325,25 @@ export default [
   },
   {
     type: "function",
+    name: "isBidder",
+    inputs: [
+      {
+        name: "",
+        type: "address",
+        internalType: "address",
+      },
+    ],
+    outputs: [
+      {
+        name: "",
+        type: "bool",
+        internalType: "bool",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
     name: "minimumBid",
     inputs: [],
     outputs: [
@@ -304,6 +390,19 @@ export default [
   },
   {
     type: "function",
+    name: "performUpkeep",
+    inputs: [
+      {
+        name: "performData",
+        type: "bytes",
+        internalType: "bytes",
+      },
+    ],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
     name: "renounceOwnership",
     inputs: [],
     outputs: [],
@@ -321,6 +420,19 @@ export default [
       },
     ],
     stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "setAutomationRegistry",
+    inputs: [
+      {
+        name: "_registry",
+        type: "address",
+        internalType: "address",
+      },
+    ],
+    outputs: [],
+    stateMutability: "nonpayable",
   },
   {
     type: "function",
@@ -492,6 +604,25 @@ export default [
   },
   {
     type: "event",
+    name: "AutomationRegistryUpdated",
+    inputs: [
+      {
+        name: "oldRegistry",
+        type: "address",
+        indexed: false,
+        internalType: "address",
+      },
+      {
+        name: "newRegistry",
+        type: "address",
+        indexed: false,
+        internalType: "address",
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "event",
     name: "Bid",
     inputs: [
       {
@@ -647,6 +778,11 @@ export default [
   {
     type: "error",
     name: "InvalidBid",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "InvalidMinimumBid",
     inputs: [],
   },
   {

@@ -1,12 +1,49 @@
 export default [
   {
     type: "constructor",
-    inputs: [],
+    inputs: [
+      {
+        name: "_link",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "_registry",
+        type: "address",
+        internalType: "address",
+      },
+    ],
     stateMutability: "nonpayable",
   },
   {
     type: "function",
-    name: "auctionDetails",
+    name: "UPKEEP_GAS_LIMIT",
+    inputs: [],
+    outputs: [
+      {
+        name: "",
+        type: "uint32",
+        internalType: "uint32",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "UPKEEP_MINIMUM_FUNDS",
+    inputs: [],
+    outputs: [
+      {
+        name: "",
+        type: "uint96",
+        internalType: "uint96",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "auctionUpkeepIds",
     inputs: [
       {
         name: "",
@@ -16,37 +53,7 @@ export default [
     ],
     outputs: [
       {
-        name: "name",
-        type: "string",
-        internalType: "string",
-      },
-      {
-        name: "symbol",
-        type: "string",
-        internalType: "string",
-      },
-      {
-        name: "createdAt",
-        type: "uint256",
-        internalType: "uint256",
-      },
-      {
-        name: "isActive",
-        type: "bool",
-        internalType: "bool",
-      },
-      {
-        name: "totalEthRaised",
-        type: "uint256",
-        internalType: "uint256",
-      },
-      {
-        name: "totalTokensSold",
-        type: "uint256",
-        internalType: "uint256",
-      },
-      {
-        name: "auctionDuration",
+        name: "",
         type: "uint256",
         internalType: "uint256",
       },
@@ -118,12 +125,36 @@ export default [
   },
   {
     type: "function",
-    name: "endAuction",
+    name: "doesAuctionExist",
     inputs: [
       {
-        name: "_auctionAddress",
+        name: "",
         type: "address",
         internalType: "address",
+      },
+    ],
+    outputs: [
+      {
+        name: "",
+        type: "bool",
+        internalType: "bool",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "fundUpkeep",
+    inputs: [
+      {
+        name: "auctionAddress",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "amount",
+        type: "uint96",
+        internalType: "uint96",
       },
     ],
     outputs: [],
@@ -144,7 +175,20 @@ export default [
   },
   {
     type: "function",
-    name: "getAuctionInfo",
+    name: "getInactiveAuctions",
+    inputs: [],
+    outputs: [
+      {
+        name: "",
+        type: "address[]",
+        internalType: "address[]",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "getPriceIntervals",
     inputs: [
       {
         name: "_auctionAddress",
@@ -154,59 +198,9 @@ export default [
     ],
     outputs: [
       {
-        name: "name",
+        name: "",
         type: "string",
         internalType: "string",
-      },
-      {
-        name: "symbol",
-        type: "string",
-        internalType: "string",
-      },
-      {
-        name: "createdAt",
-        type: "uint256",
-        internalType: "uint256",
-      },
-      {
-        name: "isActive",
-        type: "bool",
-        internalType: "bool",
-      },
-      {
-        name: "isStarted",
-        type: "bool",
-        internalType: "bool",
-      },
-      {
-        name: "isEnded",
-        type: "bool",
-        internalType: "bool",
-      },
-      {
-        name: "currentPrice",
-        type: "uint256",
-        internalType: "uint256",
-      },
-      {
-        name: "remainingTokens",
-        type: "uint256",
-        internalType: "uint256",
-      },
-      {
-        name: "timeRemaining",
-        type: "uint256",
-        internalType: "uint256",
-      },
-      {
-        name: "totalEthRaised",
-        type: "uint256",
-        internalType: "uint256",
-      },
-      {
-        name: "totalTokensSold",
-        type: "uint256",
-        internalType: "uint256",
       },
     ],
     stateMutability: "view",
@@ -226,10 +220,10 @@ export default [
   },
   {
     type: "function",
-    name: "isValidAuction",
+    name: "getUpkeepId",
     inputs: [
       {
-        name: "",
+        name: "auctionAddress",
         type: "address",
         internalType: "address",
       },
@@ -237,83 +231,37 @@ export default [
     outputs: [
       {
         name: "",
-        type: "bool",
-        internalType: "bool",
+        type: "uint256",
+        internalType: "uint256",
       },
     ],
     stateMutability: "view",
   },
   {
     type: "function",
-    name: "owner",
+    name: "i_link",
     inputs: [],
     outputs: [
       {
         name: "",
         type: "address",
-        internalType: "address",
+        internalType: "contract LinkTokenInterface",
       },
     ],
     stateMutability: "view",
   },
   {
     type: "function",
-    name: "pauseAuction",
-    inputs: [
-      {
-        name: "_auctionAddress",
-        type: "address",
-        internalType: "address",
-      },
-    ],
-    outputs: [],
-    stateMutability: "nonpayable",
-  },
-  {
-    type: "function",
-    name: "renounceOwnership",
+    name: "i_registry",
     inputs: [],
-    outputs: [],
-    stateMutability: "nonpayable",
-  },
-  {
-    type: "function",
-    name: "startAuction",
-    inputs: [
+    outputs: [
       {
-        name: "_auctionAddress",
+        name: "",
         type: "address",
-        internalType: "address",
+        internalType: "contract AutomationRegistryBaseInterface",
       },
     ],
-    outputs: [],
-    stateMutability: "nonpayable",
-  },
-  {
-    type: "function",
-    name: "transferOwnership",
-    inputs: [
-      {
-        name: "newOwner",
-        type: "address",
-        internalType: "address",
-      },
-    ],
-    outputs: [],
-    stateMutability: "nonpayable",
-  },
-  {
-    type: "function",
-    name: "unpauseAuction",
-    inputs: [
-      {
-        name: "_auctionAddress",
-        type: "address",
-        internalType: "address",
-      },
-    ],
-    outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: "view",
   },
   {
     type: "event",
@@ -355,6 +303,18 @@ export default [
         indexed: false,
         internalType: "uint256",
       },
+      {
+        name: "minimumBid",
+        type: "uint256",
+        indexed: false,
+        internalType: "uint256",
+      },
+      {
+        name: "upkeepId",
+        type: "uint256",
+        indexed: false,
+        internalType: "uint256",
+      },
     ],
     anonymous: false,
   },
@@ -385,25 +345,6 @@ export default [
     anonymous: false,
   },
   {
-    type: "event",
-    name: "OwnershipTransferred",
-    inputs: [
-      {
-        name: "previousOwner",
-        type: "address",
-        indexed: true,
-        internalType: "address",
-      },
-      {
-        name: "newOwner",
-        type: "address",
-        indexed: true,
-        internalType: "address",
-      },
-    ],
-    anonymous: false,
-  },
-  {
     type: "error",
     name: "AuctionNotFound",
     inputs: [],
@@ -415,24 +356,7 @@ export default [
   },
   {
     type: "error",
-    name: "OwnableInvalidOwner",
-    inputs: [
-      {
-        name: "owner",
-        type: "address",
-        internalType: "address",
-      },
-    ],
-  },
-  {
-    type: "error",
-    name: "OwnableUnauthorizedAccount",
-    inputs: [
-      {
-        name: "account",
-        type: "address",
-        internalType: "address",
-      },
-    ],
+    name: "LinkTransferFailed",
+    inputs: [],
   },
 ] as const;
