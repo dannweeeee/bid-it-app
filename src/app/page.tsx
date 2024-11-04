@@ -2,30 +2,30 @@
 
 import PageContainer from "@/components/ui/page-container";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Dashboard from "@/components/layout/dashboard";
-import Profile from "@/components/layout/profile";
 import { CreateAuctionDialog } from "@/components/ui/create-auction-dialog";
-import { useState } from "react";
-import { useAccount } from "wagmi";
+import LiveAuctions from "@/components/layout/live-auctions";
+import CompletedAuctions from "@/components/layout/completed-auctions";
 
 export default function Home() {
   return (
     <main className="pt-24">
       <PageContainer scrollable={true}>
         <div className="space-y-2">
-          <Tabs defaultValue="dashboard" className="space-y-4">
+          <Tabs defaultValue="live-auctions" className="space-y-4">
             <div className="flex items-center justify-between space-y-2">
               <TabsList>
-                <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
-                <TabsTrigger value="profile">Profile</TabsTrigger>
+                <TabsTrigger value="live-auctions">Live Auctions</TabsTrigger>
+                <TabsTrigger value="completed-auctions">
+                  Completed Auctions
+                </TabsTrigger>
               </TabsList>
               <CreateAuctionDialog />
             </div>
-            <TabsContent value="dashboard" className="space-y-4">
-              <Dashboard />
+            <TabsContent value="live-auctions" className="space-y-4">
+              <LiveAuctions />
             </TabsContent>
-            <TabsContent value="profile" className="space-y-4">
-              <Profile />
+            <TabsContent value="completed-auctions" className="space-y-4">
+              <CompletedAuctions />
             </TabsContent>
           </Tabs>
         </div>

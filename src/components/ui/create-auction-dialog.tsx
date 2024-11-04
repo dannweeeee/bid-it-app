@@ -23,8 +23,12 @@ import {
   FormMessage,
 } from "./form";
 import { useWriteContract } from "wagmi";
-import { AUCTIONEER_CONTRACT_ADDRESS } from "@/lib/constants";
+import {
+  AUCTIONEER_CONTRACT_ADDRESS,
+  LINK_CONTRACT_ADDRESS,
+} from "@/lib/constants";
 import AuctioneerAbi from "@/abis/AuctioneerAbi";
+import LinkTokenAbi from "@/abis/LinkTokenAbi";
 import { useToast } from "@/hooks/useToast";
 import { useState } from "react";
 
@@ -44,9 +48,18 @@ const createAuctionSchema = z.object({
   _reservePrice: z.coerce.number().positive({
     message: "Reserve price is required.",
   }),
-  _minimumBid: z.coerce.number().positive({
-    message: "Minimum bid is required.",
-  }),
+  _minimumBid: z.coerce
+    .number()
+    .positive({
+      message: "Minimum bid is required.",
+    })
+    .refine((val) => {
+      return (data: { _reservePrice: number }) => val <= data._reservePrice;
+    }, "Minimum bid must be less than or equal to reserve price")
+    .refine((val) => {
+      return (data: { _initialPrice: number; _reservePrice: number }) =>
+        data._initialPrice > data._reservePrice;
+    }, "Initial price must be greater than reserve price"),
 });
 
 export function CreateAuctionDialog() {
@@ -69,10 +82,23 @@ export function CreateAuctionDialog() {
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async (data: z.infer<typeof createAuctionSchema>) => {
-    console.log(data);
-
     try {
       setLoading(true);
+
+      // First approve LINK tokens
+      const approveTx = await writeContractAsync({
+        address: LINK_CONTRACT_ADDRESS,
+        abi: LinkTokenAbi,
+        functionName: "approve",
+        args: [
+          AUCTIONEER_CONTRACT_ADDRESS,
+          BigInt("5000000000000000000"), // Amount of LINK needed for automation
+        ],
+      });
+
+      await approveTx; // Wait for approval
+
+      // Then create auction
       const tx = await writeContractAsync({
         address: AUCTIONEER_CONTRACT_ADDRESS,
         abi: AuctioneerAbi,
@@ -99,7 +125,10 @@ export function CreateAuctionDialog() {
       toast({
         variant: "destructive",
         title: "Error!",
-        description: "An error occurred while creating the auction.",
+        description:
+          error instanceof Error
+            ? error.message
+            : "Invalid parameters. Make sure initial price is greater than reserve price and minimum bid is less than or equal to reserve price.",
       });
     } finally {
       setLoading(false);
