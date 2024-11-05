@@ -6,8 +6,10 @@ import {
   AreaChart,
   CartesianGrid,
   XAxis,
+  YAxis,
   LineChart,
   Line,
+  Tooltip,
 } from "recharts";
 
 import {
@@ -24,34 +26,54 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-const chartData = [
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
-];
+import { Address } from "viem";
+import { useFetchAuctionPriceIntervals } from "@/hooks/useFetchAuctionPriceIntervals";
+
+interface AuctionCardProps {
+  address: Address;
+}
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  price: {
+    label: "Price (ETH)",
     color: "hsl(var(--chart-1))",
-  },
-  mobile: {
-    label: "Mobile",
-    color: "hsl(var(--chart-2))",
   },
 } satisfies ChartConfig;
 
-export function AuctionCard() {
+export function AuctionCard({ address }: AuctionCardProps) {
+  const priceIntervals = useFetchAuctionPriceIntervals(address);
+  console.log("PRICE INTERVALS", priceIntervals);
+
+  const formattedData =
+    priceIntervals?.map((interval) => ({
+      minute: interval.minute,
+      price: Number((Number(interval.price) / 1e18).toFixed(10)),
+    })) ?? [];
+
+  const CustomTooltip = ({ active, payload }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-background/80 backdrop-blur-sm border rounded-lg p-3 shadow-lg">
+          <p className="text-sm font-medium">
+            Price: {payload[0].value.toFixed(18)} ETH
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Time: {payload[0].payload.minute}m
+          </p>
+        </div>
+      );
+    }
+    return null;
+  };
+
   return (
-    <Card>
+    <Card className="hover:shadow-lg transition-shadow duration-200">
       <CardHeader>
-        <CardTitle>Line Chart</CardTitle>
-        <CardDescription>
-          Showing total visitors for the last 6 months
-        </CardDescription>
+        <CardTitle className="flex items-center gap-2">
+          <TrendingUp className="h-5 w-5 text-primary" />
+          Auction Price Chart
+        </CardTitle>
+        <CardDescription>Showing price decay over time</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer
@@ -60,37 +82,50 @@ export function AuctionCard() {
         >
           <LineChart
             accessibilityLayer
-            data={chartData}
+            data={formattedData}
             margin={{
-              left: 12,
-              right: 12,
+              top: 20,
+              right: 30,
+              left: 20,
+              bottom: 20,
             }}
           >
-            <CartesianGrid vertical={false} />
+            <CartesianGrid
+              strokeDasharray="3 3"
+              vertical={false}
+              opacity={0.2}
+            />
             <XAxis
-              dataKey="month"
+              dataKey="minute"
               tickLine={false}
               axisLine={false}
-              tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 3)}
+              tickMargin={12}
+              tickFormatter={(value) => `${value}m`}
+              stroke="hsl(var(--muted-foreground))"
             />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent indicator="dot" />}
+            <YAxis
+              tickLine={false}
+              axisLine={false}
+              tickMargin={12}
+              tickFormatter={(value) => `${value.toFixed(3)}`}
+              stroke="hsl(var(--muted-foreground))"
+            />
+            <Tooltip
+              content={<CustomTooltip />}
+              cursor={{
+                stroke: "hsl(var(--muted-foreground))",
+                strokeWidth: 1,
+                strokeDasharray: "3 3",
+              }}
             />
             <Line
-              dataKey="mobile"
-              type="natural"
-              stroke="var(--color-mobile)"
-              strokeWidth={2}
-              dot={false}
-            />
-            <Line
-              dataKey="desktop"
-              type="natural"
-              stroke="var(--color-desktop)"
-              strokeWidth={2}
-              dot={false}
+              dataKey="price"
+              type="monotone"
+              stroke="hsl(var(--chart-1))"
+              strokeWidth={2.5}
+              dot={{ fill: "hsl(var(--chart-1))", strokeWidth: 2 }}
+              activeDot={{ r: 6, fill: "hsl(var(--chart-1))" }}
+              animationDuration={1000}
             />
           </LineChart>
         </ChartContainer>
@@ -98,11 +133,13 @@ export function AuctionCard() {
       <CardFooter>
         <div className="flex w-full items-start gap-2 text-sm">
           <div className="grid gap-2">
-            <div className="flex items-center gap-2 font-medium leading-none">
-              Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-            </div>
             <div className="flex items-center gap-2 leading-none text-muted-foreground">
-              January - June 2024
+              <TrendingUp className="h-4 w-4" />
+              Price decay over{" "}
+              {formattedData.length > 0
+                ? formattedData[formattedData.length - 1].minute
+                : 0}{" "}
+              minutes
             </div>
           </div>
         </div>

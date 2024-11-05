@@ -16,7 +16,9 @@ const LiveAuctions = () => {
           </p>
         </div>
       </div>
-      <AuctionCard />
+      {liveAuctions.map((auctionAddress) => (
+        <AuctionCard key={auctionAddress} address={auctionAddress} />
+      ))}
     </div>
   );
 };
