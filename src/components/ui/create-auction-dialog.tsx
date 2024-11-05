@@ -196,6 +196,7 @@ export function CreateAuctionDialog() {
                         <Input
                           placeholder="Goatseus Maximus"
                           className="rounded-lg"
+                          disabled={loading}
                           {...field}
                         />
                       </FormControl>
@@ -215,6 +216,7 @@ export function CreateAuctionDialog() {
                         <Input
                           placeholder="GOAT"
                           className="rounded-lg"
+                          disabled={loading}
                           {...field}
                         />
                       </FormControl>
@@ -235,6 +237,7 @@ export function CreateAuctionDialog() {
                           type="number"
                           placeholder="1000000"
                           className="rounded-lg [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                          disabled={loading}
                           {...field}
                           onChange={(e) => field.onChange(e.target.value)}
                         />
@@ -259,6 +262,7 @@ export function CreateAuctionDialog() {
                           step="0.000000000000000001"
                           placeholder="0.1"
                           className="rounded-lg [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                          disabled={loading}
                           {...field}
                           onChange={(e) => field.onChange(e.target.value)}
                         />
@@ -281,6 +285,7 @@ export function CreateAuctionDialog() {
                           step="0.000000000000000001"
                           placeholder="0.05"
                           className="rounded-lg [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                          disabled={loading}
                           {...field}
                           onChange={(e) => field.onChange(e.target.value)}
                         />
@@ -303,6 +308,7 @@ export function CreateAuctionDialog() {
                           step="0.000000000000000001"
                           placeholder="0.01"
                           className="rounded-lg [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                          disabled={loading}
                           {...field}
                           onChange={(e) => field.onChange(e.target.value)}
                         />

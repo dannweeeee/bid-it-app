@@ -16,9 +16,11 @@ const LiveAuctions = () => {
           </p>
         </div>
       </div>
-      {liveAuctions.map((auctionAddress) => (
-        <AuctionCard key={auctionAddress} address={auctionAddress} />
-      ))}
+      <div className="grid grid-cols-3 gap-5">
+        {liveAuctions.map((auctionAddress) => (
+          <AuctionCard key={auctionAddress} address={auctionAddress} />
+        ))}
+      </div>
     </div>
   );
 };

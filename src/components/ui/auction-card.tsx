@@ -2,8 +2,6 @@
 
 import { TrendingUp } from "lucide-react";
 import {
-  Area,
-  AreaChart,
   CartesianGrid,
   XAxis,
   YAxis,
@@ -20,14 +18,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
+import { Button } from "@/components/ui/button";
+import { ChartConfig, ChartContainer } from "@/components/ui/chart";
 import { Address } from "viem";
 import { useFetchAuctionPriceIntervals } from "@/hooks/useFetchAuctionPriceIntervals";
+import { useAccount } from "wagmi";
+import { useCheckAuctionOwner } from "@/hooks/useCheckAuctionOwner";
 
 interface AuctionCardProps {
   address: Address;
@@ -41,8 +37,9 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export function AuctionCard({ address }: AuctionCardProps) {
+  const account = useAccount();
   const priceIntervals = useFetchAuctionPriceIntervals(address);
-  console.log("PRICE INTERVALS", priceIntervals);
+  const isOwner = useCheckAuctionOwner(address, account.address as Address);
 
   const formattedData =
     priceIntervals?.map((interval) => ({
@@ -130,7 +127,7 @@ export function AuctionCard({ address }: AuctionCardProps) {
           </LineChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter>
+      <CardFooter className="flex flex-col gap-4">
         <div className="flex w-full items-start gap-2 text-sm">
           <div className="grid gap-2">
             <div className="flex items-center gap-2 leading-none text-muted-foreground">
@@ -143,6 +140,56 @@ export function AuctionCard({ address }: AuctionCardProps) {
             </div>
           </div>
         </div>
+        {isOwner && (
+          <div className="flex flex-wrap justify-center gap-3 w-full border-t pt-4">
+            <Button
+              variant="secondary"
+              size="sm"
+              className="min-w-[120px] text-black rounded-xl hover:bg-slate-400/70 hover:text-black hover:scale-105 transition ease-in-out disabled:bg-black-opacity-30"
+            >
+              Start Auction
+            </Button>
+            <Button
+              variant="secondary"
+              size="sm"
+              className="min-w-[120px] text-black rounded-xl hover:bg-slate-400/70 hover:text-black hover:scale-105 transition ease-in-out disabled:bg-black-opacity-30"
+            >
+              End Auction
+            </Button>
+            <Button
+              variant="secondary"
+              size="sm"
+              className="min-w-[120px] text-black rounded-xl hover:bg-slate-400/70 hover:text-black hover:scale-105 transition ease-in-out disabled:bg-black-opacity-30"
+            >
+              Pause Auction
+            </Button>
+            <Button
+              variant="secondary"
+              size="sm"
+              className="min-w-[120px] text-black rounded-xl hover:bg-slate-400/70 hover:text-black hover:scale-105 transition ease-in-out disabled:bg-black-opacity-30"
+            >
+              Unpause Auction
+            </Button>
+            <Button
+              variant="default"
+              size="sm"
+              className="min-w-[120px] text-white rounded-xl hover:bg-black/70 hover:text-white hover:scale-105 transition ease-in-out disabled:bg-black-opacity-30"
+            >
+              Withdraw ETH
+            </Button>
+          </div>
+        )}
+        {!isOwner && (
+          <div className="flex flex-wrap justify-center gap-3 w-full border-t pt-4">
+            <Button
+              variant="default"
+              size="sm"
+              className="min-w-[120px] text-white rounded-xl hover:bg-black/70 hover:text-white hover:scale-105 transition ease-in-out disabled:bg-black-opacity-30"
+            >
+              Bid
+            </Button>
+          </div>
+        )}
       </CardFooter>
     </Card>
   );
