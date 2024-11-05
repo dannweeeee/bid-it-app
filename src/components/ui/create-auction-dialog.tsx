@@ -22,15 +22,20 @@ import {
   FormLabel,
   FormMessage,
 } from "./form";
-import { useWriteContract } from "wagmi";
 import {
   AUCTIONEER_CONTRACT_ADDRESS,
   LINK_CONTRACT_ADDRESS,
+  SEPOLIA_CHAIN_ID,
 } from "@/lib/constants";
 import AuctioneerAbi from "@/abis/AuctioneerAbi";
 import LinkTokenAbi from "@/abis/LinkTokenAbi";
 import { useToast } from "@/hooks/useToast";
 import { useState } from "react";
+
+import { type Config } from "wagmi";
+import { writeContract, waitForTransactionReceipt } from "wagmi/actions";
+import { wagmiAdapter } from "@/config";
+import { auctionCreatedEventResponseSelector } from "@/scripts/create-auction-script";
 
 const createAuctionSchema = z.object({
   _name: z.string().min(1, {
@@ -76,30 +81,31 @@ export function CreateAuctionDialog() {
   });
 
   const { toast } = useToast();
-
-  const { writeContractAsync } = useWriteContract();
-
+  const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const config = wagmiAdapter.wagmiConfig as Config;
 
   const onSubmit = async (data: z.infer<typeof createAuctionSchema>) => {
     try {
       setLoading(true);
 
       // First approve LINK tokens
-      const approveTx = await writeContractAsync({
+      const approveTx = await writeContract(config, {
         address: LINK_CONTRACT_ADDRESS,
         abi: LinkTokenAbi,
         functionName: "approve",
         args: [
           AUCTIONEER_CONTRACT_ADDRESS,
-          BigInt("5000000000000000000"), // Amount of LINK needed for automation
+          BigInt("5000000000000000000"), // 5 LINK
         ],
+        chainId: SEPOLIA_CHAIN_ID,
       });
 
-      await approveTx; // Wait for approval
+      await waitForTransactionReceipt(config, { hash: approveTx });
 
       // Then create auction
-      const tx = await writeContractAsync({
+      const createAuctionTx = await writeContract(config, {
         address: AUCTIONEER_CONTRACT_ADDRESS,
         abi: AuctioneerAbi,
         functionName: "createAuction",
@@ -113,13 +119,29 @@ export function CreateAuctionDialog() {
         ],
       });
 
-      console.log(tx);
+      console.log(createAuctionTx);
+      const receipt = await waitForTransactionReceipt(config, {
+        hash: createAuctionTx,
+      });
+      const auctionCreatedEvent = auctionCreatedEventResponseSelector(receipt);
+
+      if (auctionCreatedEvent) {
+        console.log(
+          "Auction created at address:",
+          auctionCreatedEvent.auctionAddress
+        );
+        console.log("Token name:", auctionCreatedEvent.name);
+        console.log("Token symbol:", auctionCreatedEvent.symbol);
+        console.log("Upkeep ID:", auctionCreatedEvent.upkeepId.toString());
+      }
 
       toast({
         variant: "default",
         title: "Success!",
         description: "Auction created successfully.",
       });
+
+      setOpen(false);
     } catch (error) {
       console.log(error);
       toast({
@@ -136,7 +158,7 @@ export function CreateAuctionDialog() {
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
           className="py-2 px-5 bg-black text-white font-light rounded-xl hover:bg-black/70 hover:text-white hover:scale-105 transition ease-in-out disabled:bg-black-opacity-30"
@@ -302,7 +324,7 @@ export function CreateAuctionDialog() {
               >
                 {loading ? (
                   <>
-                    Creating Auction...
+                    Creating Auction
                     <PacmanLoader size={10} color="#FFFFFF" />
                   </>
                 ) : (

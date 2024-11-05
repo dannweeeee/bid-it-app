@@ -8,7 +8,7 @@ export default [
         internalType: "address",
       },
       {
-        name: "_registry",
+        name: "_registrar",
         type: "address",
         internalType: "address",
       },
@@ -125,45 +125,27 @@ export default [
   },
   {
     type: "function",
-    name: "doesAuctionExist",
-    inputs: [
-      {
-        name: "",
-        type: "address",
-        internalType: "address",
-      },
-    ],
+    name: "getActiveAuctions",
+    inputs: [],
     outputs: [
       {
         name: "",
-        type: "bool",
-        internalType: "bool",
+        type: "address[]",
+        internalType: "address[]",
       },
     ],
     stateMutability: "view",
   },
   {
     type: "function",
-    name: "fundUpkeep",
+    name: "getAuctionsByOwner",
     inputs: [
       {
-        name: "auctionAddress",
+        name: "owner",
         type: "address",
         internalType: "address",
       },
-      {
-        name: "amount",
-        type: "uint96",
-        internalType: "uint96",
-      },
     ],
-    outputs: [],
-    stateMutability: "nonpayable",
-  },
-  {
-    type: "function",
-    name: "getActiveAuctions",
-    inputs: [],
     outputs: [
       {
         name: "",
@@ -252,13 +234,32 @@ export default [
   },
   {
     type: "function",
-    name: "i_registry",
+    name: "i_registrar",
     inputs: [],
     outputs: [
       {
         name: "",
         type: "address",
-        internalType: "contract AutomationRegistryBaseInterface",
+        internalType: "contract AutomationRegistrarInterface",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "isValidAuction",
+    inputs: [
+      {
+        name: "",
+        type: "address",
+        internalType: "address",
+      },
+    ],
+    outputs: [
+      {
+        name: "",
+        type: "bool",
+        internalType: "bool",
       },
     ],
     stateMutability: "view",
@@ -351,12 +352,17 @@ export default [
   },
   {
     type: "error",
-    name: "InvalidParameters",
+    name: "InvalidAddresses",
     inputs: [],
   },
   {
     type: "error",
     name: "LinkTransferFailed",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "UpkeepRegistrationFailed",
     inputs: [],
   },
 ] as const;

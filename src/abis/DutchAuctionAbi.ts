@@ -37,6 +37,11 @@ export default [
         type: "address",
         internalType: "address",
       },
+      {
+        name: "_auctioneer",
+        type: "address",
+        internalType: "address",
+      },
     ],
     stateMutability: "nonpayable",
   },
@@ -75,6 +80,19 @@ export default [
         name: "",
         type: "bool",
         internalType: "bool",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "auctioneer",
+    inputs: [],
+    outputs: [
+      {
+        name: "",
+        type: "address",
+        internalType: "address",
       },
     ],
     stateMutability: "view",
@@ -201,32 +219,6 @@ export default [
   },
   {
     type: "function",
-    name: "currentPrice",
-    inputs: [],
-    outputs: [
-      {
-        name: "",
-        type: "uint256",
-        internalType: "uint256",
-      },
-    ],
-    stateMutability: "view",
-  },
-  {
-    type: "function",
-    name: "discountRate",
-    inputs: [],
-    outputs: [
-      {
-        name: "",
-        type: "uint256",
-        internalType: "uint256",
-      },
-    ],
-    stateMutability: "view",
-  },
-  {
-    type: "function",
     name: "endAuction",
     inputs: [],
     outputs: [],
@@ -274,6 +266,19 @@ export default [
         name: "timeRemaining",
         type: "uint256",
         internalType: "uint256",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "getBidders",
+    inputs: [],
+    outputs: [
+      {
+        name: "",
+        type: "address[]",
+        internalType: "address[]",
       },
     ],
     stateMutability: "view",
@@ -757,7 +762,7 @@ export default [
   },
   {
     type: "error",
-    name: "BidTooLow",
+    name: "BidQuantityTooHigh",
     inputs: [],
   },
   {
@@ -772,12 +777,17 @@ export default [
   },
   {
     type: "error",
-    name: "InvalidAmount",
+    name: "InitialPriceTooLow",
     inputs: [],
   },
   {
     type: "error",
-    name: "InvalidBid",
+    name: "InvalidBidQuantity",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "InvalidInitialPrice",
     inputs: [],
   },
   {
@@ -787,17 +797,22 @@ export default [
   },
   {
     type: "error",
-    name: "InvalidPrice",
+    name: "InvalidTotalSupply",
     inputs: [],
   },
   {
     type: "error",
-    name: "NotEnoughTokens",
+    name: "MinimumBidTooHigh",
     inputs: [],
   },
   {
     type: "error",
-    name: "NothingToClaim",
+    name: "MsgValueTooLow",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "NoEthToClaim",
     inputs: [],
   },
   {
@@ -821,11 +836,6 @@ export default [
         internalType: "address",
       },
     ],
-  },
-  {
-    type: "error",
-    name: "PriceNotMet",
-    inputs: [],
   },
   {
     type: "error",
