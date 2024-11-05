@@ -1,7 +1,11 @@
 import React from "react";
 import { AuctionCard } from "../ui/auction-card";
+import { useFetchCompletedAuctions } from "@/hooks/useFetchCompletedAuctions";
 
 const CompletedAuctions = () => {
+  const completedAuctions = useFetchCompletedAuctions();
+  console.log("COMPLETED AUCTIONS", completedAuctions);
+
   return (
     <div>
       <div className="flex items-center justify-between space-y-2 mb-6">

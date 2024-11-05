@@ -1,7 +1,11 @@
 import React from "react";
 import { AuctionCard } from "../ui/auction-card";
+import { useFetchLiveAuctions } from "@/hooks/useFetchLiveAuctions";
 
 const LiveAuctions = () => {
+  const liveAuctions = useFetchLiveAuctions();
+  console.log("LIVE AUCTIONS", liveAuctions);
+
   return (
     <div>
       <div className="flex items-center justify-between space-y-2 mb-6">
