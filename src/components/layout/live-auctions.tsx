@@ -4,7 +4,6 @@ import { useFetchLiveAuctions } from "@/hooks/useFetchLiveAuctions";
 
 const LiveAuctions = () => {
   const liveAuctions = useFetchLiveAuctions();
-  console.log("LIVE AUCTIONS", liveAuctions);
 
   return (
     <div>
@@ -16,11 +15,17 @@ const LiveAuctions = () => {
           </p>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
-        {liveAuctions.map((auctionAddress) => (
-          <AuctionCard key={auctionAddress} address={auctionAddress} />
-        ))}
-      </div>
+      {liveAuctions.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+          {liveAuctions.map((auctionAddress) => (
+            <AuctionCard key={auctionAddress} address={auctionAddress} />
+          ))}
+        </div>
+      ) : (
+        <div className="text-center text-muted-foreground py-8">
+          No live auctions currently. Check back soon!
+        </div>
+      )}
     </div>
   );
 };

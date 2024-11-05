@@ -58,11 +58,11 @@ export function AuctionCard({ address }: AuctionCardProps) {
   const CustomTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-background/80 backdrop-blur-sm border rounded-lg p-3 shadow-lg">
-          <p className="text-sm font-medium">
+        <div className="bg-background/80 backdrop-blur-sm border rounded-lg p-2 shadow-lg text-xs sm:text-sm sm:p-3">
+          <p className="font-medium">
             Price: {payload[0].value.toFixed(18)} ETH
           </p>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground">
             Time: {payload[0].payload.minute}m
           </p>
         </div>
@@ -76,86 +76,90 @@ export function AuctionCard({ address }: AuctionCardProps) {
 
     if (auctionStatus.isEnded) {
       return (
-        <span className="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded">
+        <span className="bg-red-100 text-red-800 text-xs font-medium px-2 py-0.5 rounded">
           Ended
         </span>
       );
     }
     if (!auctionStatus.isStarted) {
       return (
-        <span className="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded">
+        <span className="bg-yellow-100 text-yellow-800 text-xs font-medium px-2 py-0.5 rounded">
           Not Started
         </span>
       );
     }
     return (
-      <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">
+      <span className="bg-green-100 text-green-800 text-xs font-medium px-2 py-0.5 rounded">
         Active
       </span>
     );
   };
 
   return (
-    <Card className="hover:shadow-lg transition-shadow duration-200">
-      <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-2 sm:space-y-0">
-        <div>
-          <div className="flex flex-wrap items-center gap-3">
-            <CardTitle className="flex items-center gap-2">
-              <TrendingUp className="h-5 w-5 text-primary" />
-              Auction Price Chart
-            </CardTitle>
-            {getAuctionStatusBadge()}
+    <Card className="hover:shadow-lg transition-shadow duration-200 max-w-full overflow-x-hidden">
+      <CardHeader>
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+          <div className="space-y-2">
+            <div className="flex flex-wrap items-center gap-2 mb-1">
+              <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+                <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+                Auction Price Chart
+              </CardTitle>
+              {getAuctionStatusBadge()}
+            </div>
+            <CardDescription className="text-xs sm:text-sm">Showing price decay over time</CardDescription>
           </div>
-          <CardDescription>Showing price decay over time</CardDescription>
+          {isOwner && (
+            <div className="flex-shrink-0">
+              <WithdrawEthButton
+                contractAddress={address}
+                walletAddress={account.address as Address}
+              />
+            </div>
+          )}
         </div>
-        {isOwner && (
-          <WithdrawEthButton
-            contractAddress={address}
-            walletAddress={account.address as Address}
-          />
-        )}
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-          <div className="flex items-center gap-2 bg-slate-100 p-3 rounded-lg">
+        <div className="grid grid-cols-1 gap-3 mb-6">
+          <div className="flex items-center gap-2 bg-slate-100 p-2 sm:p-3 rounded-lg">
             <Coins className="h-4 w-4 text-slate-600 flex-shrink-0" />
             <div className="min-w-0">
-              <p className="text-sm text-slate-600">Current Price</p>
-              <p className="font-medium truncate">
+              <p className="text-xs sm:text-sm text-slate-600">Current Price</p>
+              <p className="text-sm sm:text-base font-medium truncate">
                 {auctionStatus
-                  ? Number(auctionStatus.currentTokenPrice) / 1e18
+                  ? (Number(auctionStatus.currentTokenPrice) / 1e18).toFixed(10)
                   : 0}{" "}
                 ETH
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2 bg-slate-100 p-3 rounded-lg">
+          <div className="flex items-center gap-2 bg-slate-100 p-2 sm:p-3 rounded-lg">
             <Package className="h-4 w-4 text-slate-600 flex-shrink-0" />
             <div className="min-w-0">
-              <p className="text-sm text-slate-600">Remaining Tokens</p>
-              <p className="font-medium truncate">
+              <p className="text-xs sm:text-sm text-slate-600">Remaining Tokens</p>
+              <p className="text-sm sm:text-base font-medium truncate">
                 {auctionStatus ? Number(auctionStatus.remainingTokens) : 0}
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2 bg-slate-100 p-3 rounded-lg">
+          <div className="flex items-center gap-2 bg-slate-100 p-2 sm:p-3 rounded-lg">
             <Clock className="h-4 w-4 text-slate-600 flex-shrink-0" />
             <div className="min-w-0">
-              <p className="text-sm text-slate-600">Time Remaining</p>
-              <p className="font-medium truncate">
+              <p className="text-xs sm:text-sm text-slate-600">Time Remaining</p>
+              <p className="text-sm sm:text-base font-medium truncate">
                 {auctionStatus ? Number(auctionStatus.timeRemaining) : 0}s
               </p>
             </div>
           </div>
         </div>
-        <div className="w-full h-[310px]">
+        <div className="w-full h-[250px] sm:h-[310px] -mx-4 sm:mx-0">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
               data={formattedData}
               margin={{
                 top: 20,
                 right: 10,
-                left: 10,
+                left: 0,
                 bottom: 20,
               }}
             >
@@ -168,16 +172,19 @@ export function AuctionCard({ address }: AuctionCardProps) {
                 dataKey="minute"
                 tickLine={false}
                 axisLine={false}
-                tickMargin={12}
+                tickMargin={8}
                 tickFormatter={(value) => `${value}m`}
                 stroke="hsl(var(--muted-foreground))"
+                fontSize={12}
               />
               <YAxis
                 tickLine={false}
                 axisLine={false}
-                tickMargin={12}
+                tickMargin={8}
                 tickFormatter={(value) => `${value.toFixed(3)}`}
                 stroke="hsl(var(--muted-foreground))"
+                fontSize={12}
+                width={60}
               />
               <Tooltip
                 content={<CustomTooltip />}
@@ -191,20 +198,20 @@ export function AuctionCard({ address }: AuctionCardProps) {
                 dataKey="price"
                 type="monotone"
                 stroke="hsl(var(--chart-1))"
-                strokeWidth={2.5}
-                dot={{ fill: "hsl(var(--chart-1))", strokeWidth: 2 }}
-                activeDot={{ r: 6, fill: "hsl(var(--chart-1))" }}
+                strokeWidth={2}
+                dot={{ fill: "hsl(var(--chart-1))", strokeWidth: 2, r: 3 }}
+                activeDot={{ r: 5, fill: "hsl(var(--chart-1))" }}
                 animationDuration={1000}
               />
             </LineChart>
           </ResponsiveContainer>
         </div>
       </CardContent>
-      <CardFooter className="flex flex-col gap-4">
-        <div className="flex w-full items-start gap-2 text-sm">
-          <div className="grid gap-2">
-            <div className="flex items-center gap-2 leading-none text-muted-foreground">
-              <TrendingUp className="h-4 w-4" />
+      <CardFooter className="flex flex-col gap-3">
+        <div className="flex w-full items-start gap-2">
+          <div className="grid gap-1">
+            <div className="flex items-center gap-2 text-xs sm:text-sm leading-none text-muted-foreground">
+              <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4" />
               Price decay over{" "}
               {formattedData.length > 0
                 ? formattedData[formattedData.length - 1].minute
@@ -214,7 +221,7 @@ export function AuctionCard({ address }: AuctionCardProps) {
           </div>
         </div>
         {isOwner && (
-          <div className="flex flex-wrap justify-center gap-3 w-full border-t pt-4">
+          <div className="flex flex-wrap justify-center gap-2 w-full border-t pt-3">
             {!auctionStatus?.isStarted && !auctionStatus?.isEnded && (
               <StartAuctionButton
                 contractAddress={address}
@@ -240,7 +247,7 @@ export function AuctionCard({ address }: AuctionCardProps) {
           </div>
         )}
         {!isOwner && auctionStatus?.isStarted && !auctionStatus?.isEnded && (
-          <div className="flex flex-wrap justify-center gap-3 w-full border-t pt-4">
+          <div className="flex flex-wrap justify-center gap-2 w-full border-t pt-3">
             <BidButton
               contractAddress={address}
               walletAddress={account.address as Address}

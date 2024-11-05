@@ -239,6 +239,79 @@ export default [
   },
   {
     type: "function",
+    name: "getAuctionStatistics",
+    inputs: [],
+    outputs: [
+      {
+        name: "tokenAddress",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "initialTokenPrice",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "reserveTokenPrice",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "minBidAmount",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "auctionStartTime",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "auctionEndTime",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "duration",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "totalSupply",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "ethRaised",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "soldTokens",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "totalBidders",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "automationRegistryAddress",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "auctioneerAddress",
+        type: "address",
+        internalType: "address",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
     name: "getAuctionStatus",
     inputs: [],
     outputs: [
@@ -290,6 +363,44 @@ export default [
     outputs: [
       {
         name: "",
+        type: "uint256",
+        internalType: "uint256",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "getTokenDetails",
+    inputs: [],
+    outputs: [
+      {
+        name: "tokenName",
+        type: "string",
+        internalType: "string",
+      },
+      {
+        name: "tokenSymbol",
+        type: "string",
+        internalType: "string",
+      },
+      {
+        name: "tokenDecimals",
+        type: "uint8",
+        internalType: "uint8",
+      },
+      {
+        name: "tokenTotalSupply",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "tokenAddress",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "tokenBalance",
         type: "uint256",
         internalType: "uint256",
       },
