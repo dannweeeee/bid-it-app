@@ -1,6 +1,6 @@
 "use client";
 
-import { TrendingUp, Clock, Coins, Package } from "lucide-react";
+import { TrendingUp, Clock, Coins, Package, Copy } from "lucide-react";
 import {
   CartesianGrid,
   XAxis,
@@ -31,6 +31,8 @@ import UnpauseAuctionButton from "./unpause-auction-button";
 import BidButton from "./bid-button";
 import WithdrawEthButton from "./withdraw-eth-button";
 import { useFetchAuctionStatus } from "@/hooks/useFetchAuctionStatus";
+import { useFetchTokenDetails } from "@/hooks/useFetchTokenDetails";
+import { Button } from "./button";
 
 interface AuctionCardProps {
   address: Address;
@@ -45,8 +47,10 @@ const chartConfig = {
 
 export function AuctionCard({ address }: AuctionCardProps) {
   const account = useAccount();
+  const tokenDetails = useFetchTokenDetails(address);
   const priceIntervals = useFetchAuctionPriceIntervals(address);
   const auctionStatus = useFetchAuctionStatus(address);
+  console.log(auctionStatus);
   const isOwner = useCheckAuctionOwner(address, account.address as Address);
 
   const formattedData =
@@ -69,6 +73,14 @@ export function AuctionCard({ address }: AuctionCardProps) {
       );
     }
     return null;
+  };
+
+  const truncateAddress = (address: string) => {
+    return `${address.slice(0, 6)}...${address.slice(-4)}`;
+  };
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
   };
 
   const getAuctionStatusBadge = () => {
@@ -98,25 +110,42 @@ export function AuctionCard({ address }: AuctionCardProps) {
   return (
     <Card className="hover:shadow-lg transition-shadow duration-200 max-w-full overflow-x-hidden">
       <CardHeader>
-        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
           <div className="space-y-2">
             <div className="flex flex-wrap items-center gap-2 mb-1">
               <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-                <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
-                Auction Price Chart
+                {tokenDetails?.tokenName} ({tokenDetails?.tokenSymbol})
               </CardTitle>
               {getAuctionStatusBadge()}
             </div>
-            <CardDescription className="text-xs sm:text-sm">Showing price decay over time</CardDescription>
+            <CardDescription className="text-xs sm:text-sm space-y-1">
+              <div className="flex items-center gap-2">
+                <span>
+                  Token Address:{" "}
+                  {tokenDetails?.tokenAddress
+                    ? truncateAddress(tokenDetails.tokenAddress)
+                    : ""}
+                </span>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-6 w-6 p-0"
+                  onClick={() =>
+                    tokenDetails?.tokenAddress &&
+                    copyToClipboard(tokenDetails.tokenAddress)
+                  }
+                >
+                  <Copy className="h-3 w-3" />
+                </Button>
+              </div>
+              <p>
+                Total Supply:{" "}
+                {Number(tokenDetails?.tokenTotalSupply || BigInt(0)) /
+                  Math.pow(10, tokenDetails?.tokenDecimals || 18)}{" "}
+                {tokenDetails?.tokenSymbol}
+              </p>
+            </CardDescription>
           </div>
-          {isOwner && (
-            <div className="flex-shrink-0">
-              <WithdrawEthButton
-                contractAddress={address}
-                walletAddress={account.address as Address}
-              />
-            </div>
-          )}
         </div>
       </CardHeader>
       <CardContent>
@@ -136,7 +165,9 @@ export function AuctionCard({ address }: AuctionCardProps) {
           <div className="flex items-center gap-2 bg-slate-100 p-2 sm:p-3 rounded-lg">
             <Package className="h-4 w-4 text-slate-600 flex-shrink-0" />
             <div className="min-w-0">
-              <p className="text-xs sm:text-sm text-slate-600">Remaining Tokens</p>
+              <p className="text-xs sm:text-sm text-slate-600">
+                Remaining Tokens
+              </p>
               <p className="text-sm sm:text-base font-medium truncate">
                 {auctionStatus ? Number(auctionStatus.remainingTokens) : 0}
               </p>
@@ -145,7 +176,9 @@ export function AuctionCard({ address }: AuctionCardProps) {
           <div className="flex items-center gap-2 bg-slate-100 p-2 sm:p-3 rounded-lg">
             <Clock className="h-4 w-4 text-slate-600 flex-shrink-0" />
             <div className="min-w-0">
-              <p className="text-xs sm:text-sm text-slate-600">Time Remaining</p>
+              <p className="text-xs sm:text-sm text-slate-600">
+                Time Remaining
+              </p>
               <p className="text-sm sm:text-base font-medium truncate">
                 {auctionStatus ? Number(auctionStatus.timeRemaining) : 0}s
               </p>
@@ -220,35 +253,41 @@ export function AuctionCard({ address }: AuctionCardProps) {
             </div>
           </div>
         </div>
-        {isOwner && (
+        {isOwner && !auctionStatus?.isStarted && !auctionStatus?.isEnded && (
           <div className="flex flex-wrap justify-center gap-2 w-full border-t pt-3">
-            {!auctionStatus?.isStarted && !auctionStatus?.isEnded && (
-              <StartAuctionButton
-                contractAddress={address}
-                walletAddress={account.address as Address}
-              />
-            )}
-            {auctionStatus?.isStarted && !auctionStatus?.isEnded && (
-              <>
-                <EndAuctionButton
-                  contractAddress={address}
-                  walletAddress={account.address as Address}
-                />
-                <PauseAuctionButton
-                  contractAddress={address}
-                  walletAddress={account.address as Address}
-                />
-                <UnpauseAuctionButton
-                  contractAddress={address}
-                  walletAddress={account.address as Address}
-                />
-              </>
-            )}
+            <StartAuctionButton
+              contractAddress={address}
+              walletAddress={account.address as Address}
+            />
+          </div>
+        )}
+        {isOwner && auctionStatus?.isStarted && !auctionStatus?.isEnded && (
+          <div className="flex flex-wrap justify-center gap-2 w-full border-t pt-3">
+            <EndAuctionButton
+              contractAddress={address}
+              walletAddress={account.address as Address}
+            />
+            <PauseAuctionButton
+              contractAddress={address}
+              walletAddress={account.address as Address}
+            />
+            <UnpauseAuctionButton
+              contractAddress={address}
+              walletAddress={account.address as Address}
+            />
           </div>
         )}
         {!isOwner && auctionStatus?.isStarted && !auctionStatus?.isEnded && (
           <div className="flex flex-wrap justify-center gap-2 w-full border-t pt-3">
             <BidButton
+              contractAddress={address}
+              walletAddress={account.address as Address}
+            />
+          </div>
+        )}
+        {isOwner && auctionStatus?.isEnded && (
+          <div className="flex-shrink-0">
+            <WithdrawEthButton
               contractAddress={address}
               walletAddress={account.address as Address}
             />

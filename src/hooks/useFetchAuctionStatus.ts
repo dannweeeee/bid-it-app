@@ -1,4 +1,3 @@
-import { AUCTIONEER_CONTRACT_ADDRESS } from "@/lib/constants";
 import { createPublicClient, http, fallback, Address } from "viem";
 import { sepolia } from "viem/chains";
 import { useEffect, useState } from "react";

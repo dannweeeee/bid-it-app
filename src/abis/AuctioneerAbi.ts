@@ -12,6 +12,11 @@ export default [
         type: "address",
         internalType: "address",
       },
+      {
+        name: "_registry",
+        type: "address",
+        internalType: "address",
+      },
     ],
     stateMutability: "nonpayable",
   },
@@ -241,6 +246,19 @@ export default [
         name: "",
         type: "address",
         internalType: "contract AutomationRegistrarInterface",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "i_registry",
+    inputs: [],
+    outputs: [
+      {
+        name: "",
+        type: "address",
+        internalType: "address",
       },
     ],
     stateMutability: "view",
