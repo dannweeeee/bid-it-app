@@ -12,20 +12,36 @@ export default function Home() {
       <PageContainer scrollable={true}>
         <div className="space-y-2">
           <Tabs defaultValue="live-auctions" className="space-y-4">
-            <div className="flex items-center justify-between space-y-2">
-              <TabsList>
-                <TabsTrigger value="live-auctions">Live Auctions</TabsTrigger>
-                <TabsTrigger value="completed-auctions">
+            <div className="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0">
+              <TabsList className="w-full sm:w-auto">
+                <TabsTrigger
+                  value="live-auctions"
+                  className="flex-1 sm:flex-none"
+                >
+                  Live Auctions
+                </TabsTrigger>
+                <TabsTrigger
+                  value="completed-auctions"
+                  className="flex-1 sm:flex-none"
+                >
                   Completed Auctions
                 </TabsTrigger>
               </TabsList>
-              <CreateAuctionDialog />
+              <div className="hidden sm:flex items-center justify-center w-full sm:w-auto">
+                <CreateAuctionDialog />
+              </div>
             </div>
             <TabsContent value="live-auctions" className="space-y-4">
               <LiveAuctions />
+              <div className="flex sm:hidden items-center justify-center w-full mt-8">
+                <CreateAuctionDialog />
+              </div>
             </TabsContent>
             <TabsContent value="completed-auctions" className="space-y-4">
               <CompletedAuctions />
+              <div className="flex sm:hidden items-center justify-center w-full mt-8">
+                <CreateAuctionDialog />
+              </div>
             </TabsContent>
           </Tabs>
         </div>

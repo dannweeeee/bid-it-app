@@ -8,7 +8,7 @@ const LiveAuctions = () => {
 
   return (
     <div>
-      <div className="flex items-center justify-between space-y-2 mb-6">
+      <div className="flex flex-col space-y-2 mb-6">
         <div>
           <h2 className="text-2xl font-bold tracking-tight">Live Auctions</h2>
           <p className="text-sm text-muted-foreground">
@@ -16,7 +16,7 @@ const LiveAuctions = () => {
           </p>
         </div>
       </div>
-      <div className="grid grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
         {liveAuctions.map((auctionAddress) => (
           <AuctionCard key={auctionAddress} address={auctionAddress} />
         ))}

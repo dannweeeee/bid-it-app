@@ -65,12 +65,23 @@ export function AuctionCard({ address }: AuctionCardProps) {
 
   return (
     <Card className="hover:shadow-lg transition-shadow duration-200">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <TrendingUp className="h-5 w-5 text-primary" />
-          Auction Price Chart
-        </CardTitle>
-        <CardDescription>Showing price decay over time</CardDescription>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <div>
+          <CardTitle className="flex items-center gap-2">
+            <TrendingUp className="h-5 w-5 text-primary" />
+            Auction Price Chart
+          </CardTitle>
+          <CardDescription>Showing price decay over time</CardDescription>
+        </div>
+        {isOwner && (
+          <Button
+            variant="default"
+            size="sm"
+            className="min-w-[120px] text-white rounded-xl hover:bg-black/70 hover:text-white hover:scale-105 transition ease-in-out disabled:bg-black-opacity-30"
+          >
+            Withdraw ETH
+          </Button>
+        )}
       </CardHeader>
       <CardContent>
         <ChartContainer
@@ -169,13 +180,6 @@ export function AuctionCard({ address }: AuctionCardProps) {
               className="min-w-[120px] text-black rounded-xl hover:bg-slate-400/70 hover:text-black hover:scale-105 transition ease-in-out disabled:bg-black-opacity-30"
             >
               Unpause Auction
-            </Button>
-            <Button
-              variant="default"
-              size="sm"
-              className="min-w-[120px] text-white rounded-xl hover:bg-black/70 hover:text-white hover:scale-105 transition ease-in-out disabled:bg-black-opacity-30"
-            >
-              Withdraw ETH
             </Button>
           </div>
         )}
