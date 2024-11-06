@@ -8,9 +8,9 @@ import CompletedAuctions from "@/components/layout/completed-auctions";
 
 export default function Home() {
   return (
-    <main className="pt-24">
+    <main className="pt-24 h-screen w-screen">
       <PageContainer scrollable={true}>
-        <div className="space-y-2">
+        <div className="space-y-2 pb-24">
           <Tabs defaultValue="live-auctions" className="space-y-4">
             <div className="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0">
               <TabsList className="w-full sm:w-auto">
