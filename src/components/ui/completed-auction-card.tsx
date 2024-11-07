@@ -25,12 +25,12 @@ import { useAccount } from "wagmi";
 import { useCheckAuctionOwner } from "@/hooks/useCheckAuctionOwner";
 import StartAuctionButton from "./start-auction-button";
 import EndAuctionButton from "./end-auction-button";
-import BidButton from "./bid-button";
 import WithdrawEthButton from "./withdraw-eth-button";
 import { useFetchAuctionStatus } from "@/hooks/useFetchAuctionStatus";
 import { useFetchTokenDetails } from "@/hooks/useFetchTokenDetails";
 import { Button } from "./button";
 import { useEffect, useState } from "react";
+import BidDialog from "./bid-dialog";
 
 interface AuctionCardProps {
   address: Address;
@@ -277,7 +277,7 @@ export function CompletedAuctionCard({ address }: AuctionCardProps) {
         )}
         {!isOwner && auctionStatus?.isStarted && !auctionStatus?.isEnded && (
           <div className="flex flex-wrap justify-center gap-2 w-full border-t pt-3">
-            <BidButton
+            <BidDialog
               contractAddress={address}
               walletAddress={account.address as Address}
             />
