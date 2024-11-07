@@ -10,8 +10,11 @@ const BidButton = ({
   contractAddress: Address;
   walletAddress: Address;
 }) => {
+  const handleBid = async () => {};
+
   return (
     <Button
+      onClick={handleBid}
       variant="default"
       size="sm"
       className="min-w-[120px] text-white rounded-xl hover:bg-black/70 hover:text-white hover:scale-105 transition ease-in-out disabled:bg-black-opacity-30"

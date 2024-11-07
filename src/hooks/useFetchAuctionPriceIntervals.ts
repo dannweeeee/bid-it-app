@@ -1,6 +1,6 @@
 import AuctioneerAbi from "@/abis/AuctioneerAbi";
 import { createPublicClient, http, fallback, Address } from "viem";
-import { sepolia } from "viem/chains";
+import { baseSepolia } from "viem/chains";
 import { useEffect, useState } from "react";
 import {
   AUCTIONEER_CONTRACT_ADDRESS,
@@ -23,7 +23,7 @@ export function useFetchAuctionPriceIntervals(contractAddress: Address) {
     async function fetchPriceIntervals() {
       try {
         const client = createPublicClient({
-          chain: sepolia,
+          chain: baseSepolia,
           transport: fallback([http(BASE_SEPOLIA_RPC_URL)]),
         });
 

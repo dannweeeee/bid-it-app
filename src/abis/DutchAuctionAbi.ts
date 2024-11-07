@@ -539,19 +539,6 @@ export default [
   },
   {
     type: "function",
-    name: "setAutomationRegistry",
-    inputs: [
-      {
-        name: "_registry",
-        type: "address",
-        internalType: "address",
-      },
-    ],
-    outputs: [],
-    stateMutability: "nonpayable",
-  },
-  {
-    type: "function",
     name: "startAuction",
     inputs: [],
     outputs: [],

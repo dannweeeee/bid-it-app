@@ -1,5 +1,5 @@
 import { createPublicClient, http, fallback, Address } from "viem";
-import { sepolia } from "viem/chains";
+import { baseSepolia } from "viem/chains";
 import { useEffect, useState } from "react";
 import DutchAuctionAbi from "@/abis/DutchAuctionAbi";
 import { BASE_SEPOLIA_RPC_URL } from "@/lib/constants";
@@ -21,7 +21,7 @@ export function useFetchAuctionStatus(auctionAddress: Address) {
     async function fetchAuctionStatus() {
       try {
         const client = createPublicClient({
-          chain: sepolia,
+          chain: baseSepolia,
           transport: fallback([http(BASE_SEPOLIA_RPC_URL)]),
         });
 

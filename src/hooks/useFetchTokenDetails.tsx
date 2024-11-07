@@ -1,5 +1,5 @@
 import { createPublicClient, http, fallback, Address } from "viem";
-import { sepolia } from "viem/chains";
+import { baseSepolia } from "viem/chains";
 import { useEffect, useState } from "react";
 import DutchAuctionAbi from "@/abis/DutchAuctionAbi";
 import { BASE_SEPOLIA_RPC_URL } from "@/lib/constants";
@@ -20,12 +20,8 @@ export function useFetchTokenDetails(auctionAddress: Address) {
     async function fetchTokenDetails() {
       try {
         const client = createPublicClient({
-          chain: sepolia,
-          transport: fallback([
-            http(
-              BASE_SEPOLIA_RPC_URL
-            ),
-          ]),
+          chain: baseSepolia,
+          transport: fallback([http(BASE_SEPOLIA_RPC_URL)]),
         });
 
         const result = await client.readContract({

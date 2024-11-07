@@ -4,7 +4,7 @@ import {
   BASE_SEPOLIA_RPC_URL,
 } from "@/lib/constants";
 import { createPublicClient, http, fallback } from "viem";
-import { sepolia } from "viem/chains";
+import { baseSepolia } from "viem/chains";
 import { useEffect, useState } from "react";
 
 export function useFetchLiveAuctions() {
@@ -14,7 +14,7 @@ export function useFetchLiveAuctions() {
     async function fetchAuctions() {
       try {
         const client = createPublicClient({
-          chain: sepolia,
+          chain: baseSepolia,
           transport: fallback([http(BASE_SEPOLIA_RPC_URL)]),
         });
 

@@ -4,14 +4,14 @@ import { useEffect, useState } from "react";
 import DutchAuctionAbi from "@/abis/DutchAuctionAbi";
 import { BASE_SEPOLIA_RPC_URL } from "@/lib/constants";
 
-export function useCheckAuctionOwner(
-  contractAddress: Address,
-  walletAddress: Address
+export function useCalculateBidPrice(
+  auctionAddress: Address,
+  quantity: number
 ) {
-  const [isOwner, setIsOwner] = useState(false);
+  const [price, setPrice] = useState<bigint | null>(null);
 
   useEffect(() => {
-    async function fetchOwner() {
+    async function calculatePrice() {
       try {
         const client = createPublicClient({
           chain: baseSepolia,
@@ -19,23 +19,22 @@ export function useCheckAuctionOwner(
         });
 
         const result = await client.readContract({
-          address: contractAddress,
+          address: auctionAddress,
           abi: DutchAuctionAbi,
-          functionName: "owner",
+          functionName: "calculatePrice",
+          args: [BigInt(quantity)],
         });
 
-        // Check if the wallet address matches the owner address
-        setIsOwner(result === walletAddress);
+        setPrice(result as bigint);
       } catch (err) {
-        console.error("Failed to fetch owner:", err);
-        setIsOwner(false);
+        console.error("Failed to calculate price:", err);
       }
     }
 
-    if (contractAddress && walletAddress) {
-      fetchOwner();
+    if (auctionAddress && quantity > 0) {
+      calculatePrice();
     }
-  }, [contractAddress, walletAddress]);
+  }, [auctionAddress, quantity]);
 
-  return isOwner;
+  return price;
 }

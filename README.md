@@ -1,6 +1,6 @@
 # Team Bid It dApp
 
-Dutch Auction dApp built on Ethereum Sepolia.
+Dutch Auction dApp built on Base Sepolia.
 
 ## Getting Started
 
