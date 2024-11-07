@@ -7,7 +7,7 @@ import { wagmiAdapter } from "@/config";
 import { useToast } from "@/hooks/useToast";
 import DutchAuctionAbi from "@/abis/DutchAuctionAbi";
 import { Config } from "wagmi";
-import { PacmanLoader } from "react-spinners";
+import { SyncLoader } from "react-spinners";
 
 const PauseAuctionButton = ({
   contractAddress,
@@ -55,7 +55,7 @@ const PauseAuctionButton = ({
     >
       {loading ? (
         <>
-          <PacmanLoader size={8} color="#000000" />
+          <SyncLoader size={3} color="#000000" />
         </>
       ) : (
         <Pause className="w-4 h-4" />

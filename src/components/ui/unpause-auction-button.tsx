@@ -7,7 +7,7 @@ import { wagmiAdapter } from "@/config";
 import { Config } from "wagmi";
 import { useToast } from "@/hooks/useToast";
 import DutchAuctionAbi from "@/abis/DutchAuctionAbi";
-import { PacmanLoader } from "react-spinners";
+import { SyncLoader } from "react-spinners";
 
 const UnpauseAuctionButton = ({
   contractAddress,
@@ -54,7 +54,7 @@ const UnpauseAuctionButton = ({
       className="w-10 text-black rounded-xl hover:bg-slate-400/70 hover:text-black hover:scale-105 transition ease-in-out disabled:bg-black-opacity-30"
     >
       {loading ? (
-        <PacmanLoader size={8} color="#000000" />
+        <SyncLoader size={3} color="#000000" />
       ) : (
         <Play className="w-4 h-4" />
       )}

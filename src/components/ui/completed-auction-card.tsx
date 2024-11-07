@@ -25,8 +25,6 @@ import { useAccount } from "wagmi";
 import { useCheckAuctionOwner } from "@/hooks/useCheckAuctionOwner";
 import StartAuctionButton from "./start-auction-button";
 import EndAuctionButton from "./end-auction-button";
-import PauseAuctionButton from "./pause-auction-button";
-import UnpauseAuctionButton from "./unpause-auction-button";
 import BidButton from "./bid-button";
 import WithdrawEthButton from "./withdraw-eth-button";
 import { useFetchAuctionStatus } from "@/hooks/useFetchAuctionStatus";
@@ -272,14 +270,6 @@ export function CompletedAuctionCard({ address }: AuctionCardProps) {
         {isOwner && auctionStatus?.isStarted && !auctionStatus?.isEnded && (
           <div className="flex flex-wrap justify-center gap-2 w-full border-t pt-3">
             <EndAuctionButton
-              contractAddress={address}
-              walletAddress={account.address as Address}
-            />
-            <PauseAuctionButton
-              contractAddress={address}
-              walletAddress={account.address as Address}
-            />
-            <UnpauseAuctionButton
               contractAddress={address}
               walletAddress={account.address as Address}
             />

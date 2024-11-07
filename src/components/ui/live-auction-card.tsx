@@ -275,14 +275,6 @@ export function LiveAuctionCard({ address }: AuctionCardProps) {
               contractAddress={address}
               walletAddress={account.address as Address}
             />
-            <PauseAuctionButton
-              contractAddress={address}
-              walletAddress={account.address as Address}
-            />
-            <UnpauseAuctionButton
-              contractAddress={address}
-              walletAddress={account.address as Address}
-            />
           </div>
         )}
         {!isOwner && auctionStatus?.isStarted && !auctionStatus?.isEnded && (

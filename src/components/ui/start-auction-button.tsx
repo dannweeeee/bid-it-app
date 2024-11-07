@@ -55,7 +55,7 @@ const StartAuctionButton = ({
       {loading ? (
         <>
           Starting
-          <PacmanLoader size={10} color="#000000" />
+          <PacmanLoader size={8} color="#000000" />
         </>
       ) : (
         "Start Auction"
