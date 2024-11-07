@@ -33,6 +33,7 @@ import WithdrawEthButton from "./withdraw-eth-button";
 import { useFetchAuctionStatus } from "@/hooks/useFetchAuctionStatus";
 import { useFetchTokenDetails } from "@/hooks/useFetchTokenDetails";
 import { Button } from "./button";
+import { useEffect, useState } from "react";
 
 interface AuctionCardProps {
   address: Address;
@@ -50,8 +51,27 @@ export function AuctionCard({ address }: AuctionCardProps) {
   const tokenDetails = useFetchTokenDetails(address);
   const priceIntervals = useFetchAuctionPriceIntervals(address);
   const auctionStatus = useFetchAuctionStatus(address);
+  const [timeRemaining, setTimeRemaining] = useState<number>(0);
   console.log(auctionStatus);
   const isOwner = useCheckAuctionOwner(address, account.address as Address);
+
+  useEffect(() => {
+    if (auctionStatus?.timeRemaining) {
+      setTimeRemaining(Number(auctionStatus.timeRemaining));
+
+      const timer = setInterval(() => {
+        setTimeRemaining((prev) => {
+          if (prev <= 0) {
+            clearInterval(timer);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+
+      return () => clearInterval(timer);
+    }
+  }, [auctionStatus?.timeRemaining]);
 
   const formattedData =
     priceIntervals?.map((interval) => ({
@@ -186,9 +206,7 @@ export function AuctionCard({ address }: AuctionCardProps) {
                 Time Remaining
               </p>
               <p className="text-sm sm:text-base font-medium truncate">
-                {auctionStatus
-                  ? formatTimeRemaining(Number(auctionStatus.timeRemaining))
-                  : "0m 0s"}
+                {formatTimeRemaining(timeRemaining)}
               </p>
             </div>
           </div>
