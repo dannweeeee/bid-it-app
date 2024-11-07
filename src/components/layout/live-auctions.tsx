@@ -1,6 +1,6 @@
 import React from "react";
-import { AuctionCard } from "../ui/auction-card";
 import { useFetchLiveAuctions } from "@/hooks/useFetchLiveAuctions";
+import { LiveAuctionCard } from "../ui/live-auction-card";
 
 const LiveAuctions = () => {
   const liveAuctions = useFetchLiveAuctions();
@@ -18,7 +18,7 @@ const LiveAuctions = () => {
       {liveAuctions.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
           {liveAuctions.map((auctionAddress) => (
-            <AuctionCard key={auctionAddress} address={auctionAddress} />
+            <LiveAuctionCard key={auctionAddress} address={auctionAddress} />
           ))}
         </div>
       ) : (

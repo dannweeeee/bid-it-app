@@ -1,6 +1,6 @@
 "use client";
 
-import { TrendingUp, Clock, Coins, Package, Copy } from "lucide-react";
+import { Clock, Coins, Package, Copy } from "lucide-react";
 import {
   CartesianGrid,
   XAxis,
@@ -19,7 +19,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ChartConfig } from "@/components/ui/chart";
 import { Address } from "viem";
 import { useFetchAuctionPriceIntervals } from "@/hooks/useFetchAuctionPriceIntervals";
 import { useAccount } from "wagmi";
@@ -39,17 +38,11 @@ interface AuctionCardProps {
   address: Address;
 }
 
-const chartConfig = {
-  price: {
-    label: "Price (ETH)",
-    color: "hsl(var(--chart-1))",
-  },
-} satisfies ChartConfig;
-
-export function AuctionCard({ address }: AuctionCardProps) {
+export function CompletedAuctionCard({ address }: AuctionCardProps) {
   const account = useAccount();
   const tokenDetails = useFetchTokenDetails(address);
   const priceIntervals = useFetchAuctionPriceIntervals(address);
+  console.log(priceIntervals);
   const auctionStatus = useFetchAuctionStatus(address);
   const [timeRemaining, setTimeRemaining] = useState<number>(0);
   console.log(auctionStatus);
@@ -165,7 +158,7 @@ export function AuctionCard({ address }: AuctionCardProps) {
                 </Button>
               </div>
               <p>
-                Total Supply:{" "}
+                Initial Supply:{" "}
                 {Number(tokenDetails?.tokenTotalSupply || BigInt(0)) /
                   Math.pow(10, tokenDetails?.tokenDecimals || 18)}{" "}
                 {tokenDetails?.tokenSymbol}
@@ -217,7 +210,7 @@ export function AuctionCard({ address }: AuctionCardProps) {
               data={formattedData}
               margin={{
                 top: 20,
-                right: 10,
+                right: 20,
                 left: 0,
                 bottom: 20,
               }}
@@ -235,6 +228,7 @@ export function AuctionCard({ address }: AuctionCardProps) {
                 tickFormatter={(value) => `${value}m`}
                 stroke="hsl(var(--muted-foreground))"
                 fontSize={12}
+                interval={0}
               />
               <YAxis
                 tickLine={false}
@@ -267,18 +261,6 @@ export function AuctionCard({ address }: AuctionCardProps) {
         </div>
       </CardContent>
       <CardFooter className="flex flex-col gap-3">
-        <div className="flex w-full items-start gap-2">
-          <div className="grid gap-1">
-            <div className="flex items-center gap-2 text-xs sm:text-sm leading-none text-muted-foreground">
-              <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4" />
-              Price decay over{" "}
-              {formattedData.length > 0
-                ? formattedData[formattedData.length - 1].minute
-                : 0}{" "}
-              minutes
-            </div>
-          </div>
-        </div>
         {isOwner && !auctionStatus?.isStarted && !auctionStatus?.isEnded && (
           <div className="flex flex-wrap justify-center gap-2 w-full border-t pt-3">
             <StartAuctionButton

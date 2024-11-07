@@ -1,6 +1,6 @@
 import React from "react";
-import { AuctionCard } from "../ui/auction-card";
 import { useFetchCompletedAuctions } from "@/hooks/useFetchCompletedAuctions";
+import { CompletedAuctionCard } from "../ui/completed-auction-card";
 
 const CompletedAuctions = () => {
   const completedAuctions = useFetchCompletedAuctions();
@@ -20,7 +20,10 @@ const CompletedAuctions = () => {
       {completedAuctions.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
           {completedAuctions.map((auctionAddress) => (
-            <AuctionCard key={auctionAddress} address={auctionAddress} />
+            <CompletedAuctionCard
+              key={auctionAddress}
+              address={auctionAddress}
+            />
           ))}
         </div>
       ) : (
