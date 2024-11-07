@@ -2,6 +2,7 @@ import { createPublicClient, http, fallback, Address } from "viem";
 import { sepolia } from "viem/chains";
 import { useEffect, useState } from "react";
 import DutchAuctionAbi from "@/abis/DutchAuctionAbi";
+import { BASE_SEPOLIA_RPC_URL } from "@/lib/constants";
 
 export function useCheckAuctionOwner(
   contractAddress: Address,
@@ -14,11 +15,7 @@ export function useCheckAuctionOwner(
       try {
         const client = createPublicClient({
           chain: sepolia,
-          transport: fallback([
-            http(
-              `https://eth-sepolia.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`
-            ),
-          ]),
+          transport: fallback([http(BASE_SEPOLIA_RPC_URL)]),
         });
 
         const result = await client.readContract({

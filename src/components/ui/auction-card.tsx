@@ -107,6 +107,12 @@ export function AuctionCard({ address }: AuctionCardProps) {
     );
   };
 
+  const formatTimeRemaining = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}m ${remainingSeconds}s`;
+  };
+
   return (
     <Card className="hover:shadow-lg transition-shadow duration-200 max-w-full overflow-x-hidden">
       <CardHeader>
@@ -180,7 +186,9 @@ export function AuctionCard({ address }: AuctionCardProps) {
                 Time Remaining
               </p>
               <p className="text-sm sm:text-base font-medium truncate">
-                {auctionStatus ? Number(auctionStatus.timeRemaining) : 0}s
+                {auctionStatus
+                  ? formatTimeRemaining(Number(auctionStatus.timeRemaining))
+                  : "0m 0s"}
               </p>
             </div>
           </div>

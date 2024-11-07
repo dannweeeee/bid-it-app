@@ -24,8 +24,8 @@ import {
 } from "./form";
 import {
   AUCTIONEER_CONTRACT_ADDRESS,
+  BASE_SEPOLIA_CHAIN_ID,
   LINK_CONTRACT_ADDRESS,
-  SEPOLIA_CHAIN_ID,
 } from "@/lib/constants";
 import AuctioneerAbi from "@/abis/AuctioneerAbi";
 import LinkTokenAbi from "@/abis/LinkTokenAbi";
@@ -97,9 +97,9 @@ export function CreateAuctionDialog() {
         functionName: "approve",
         args: [
           AUCTIONEER_CONTRACT_ADDRESS,
-          BigInt("5000000000000000000"), // 5 LINK
+          BigInt("1000000000000000000"), // 1 LINK
         ],
-        chainId: SEPOLIA_CHAIN_ID,
+        chainId: BASE_SEPOLIA_CHAIN_ID,
       });
 
       await waitForTransactionReceipt(config, { hash: approveTx });

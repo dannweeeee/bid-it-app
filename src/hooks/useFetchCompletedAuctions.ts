@@ -1,5 +1,8 @@
 import AuctioneerAbi from "@/abis/AuctioneerAbi";
-import { AUCTIONEER_CONTRACT_ADDRESS } from "@/lib/constants";
+import {
+  AUCTIONEER_CONTRACT_ADDRESS,
+  BASE_SEPOLIA_RPC_URL,
+} from "@/lib/constants";
 import { createPublicClient, http, fallback } from "viem";
 import { sepolia } from "viem/chains";
 import { useEffect, useState } from "react";
@@ -12,11 +15,7 @@ export function useFetchCompletedAuctions() {
       try {
         const client = createPublicClient({
           chain: sepolia,
-          transport: fallback([
-            http(
-              `https://eth-sepolia.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`
-            ),
-          ]),
+          transport: fallback([http(BASE_SEPOLIA_RPC_URL)]),
         });
 
         const auctions = await client.readContract({

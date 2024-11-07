@@ -178,7 +178,7 @@ export default [
         internalType: "bool",
       },
       {
-        name: "performData",
+        name: "",
         type: "bytes",
         internalType: "bytes",
       },
@@ -509,7 +509,7 @@ export default [
     name: "performUpkeep",
     inputs: [
       {
-        name: "performData",
+        name: "",
         type: "bytes",
         internalType: "bytes",
       },
