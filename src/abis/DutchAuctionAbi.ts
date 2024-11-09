@@ -60,19 +60,6 @@ export default [
   },
   {
     type: "function",
-    name: "BATCH_SIZE",
-    inputs: [],
-    outputs: [
-      {
-        name: "",
-        type: "uint256",
-        internalType: "uint256",
-      },
-    ],
-    stateMutability: "view",
-  },
-  {
-    type: "function",
     name: "auctionEnded",
     inputs: [],
     outputs: [
@@ -99,27 +86,8 @@ export default [
   },
   {
     type: "function",
-    name: "automationRegistry",
-    inputs: [],
-    outputs: [
-      {
-        name: "",
-        type: "address",
-        internalType: "address",
-      },
-    ],
-    stateMutability: "view",
-  },
-  {
-    type: "function",
     name: "bid",
-    inputs: [
-      {
-        name: "_quantity",
-        type: "uint256",
-        internalType: "uint256",
-      },
-    ],
+    inputs: [],
     outputs: [],
     stateMutability: "payable",
   },
@@ -138,25 +106,6 @@ export default [
         name: "",
         type: "address",
         internalType: "address",
-      },
-    ],
-    stateMutability: "view",
-  },
-  {
-    type: "function",
-    name: "calculatePrice",
-    inputs: [
-      {
-        name: "_quantity",
-        type: "uint256",
-        internalType: "uint256",
-      },
-    ],
-    outputs: [
-      {
-        name: "",
-        type: "uint256",
-        internalType: "uint256",
       },
     ],
     stateMutability: "view",
@@ -187,26 +136,7 @@ export default [
   },
   {
     type: "function",
-    name: "claimableTokens",
-    inputs: [
-      {
-        name: "",
-        type: "address",
-        internalType: "address",
-      },
-    ],
-    outputs: [
-      {
-        name: "",
-        type: "uint256",
-        internalType: "uint256",
-      },
-    ],
-    stateMutability: "view",
-  },
-  {
-    type: "function",
-    name: "currentClaimIndex",
+    name: "clearingPrice",
     inputs: [],
     outputs: [
       {
@@ -228,6 +158,25 @@ export default [
     type: "function",
     name: "endTime",
     inputs: [],
+    outputs: [
+      {
+        name: "",
+        type: "uint256",
+        internalType: "uint256",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "ethContributed",
+    inputs: [
+      {
+        name: "",
+        type: "address",
+        internalType: "address",
+      },
+    ],
     outputs: [
       {
         name: "",
@@ -283,12 +232,17 @@ export default [
         internalType: "uint256",
       },
       {
-        name: "ethRaised",
+        name: "soldTokens",
         type: "uint256",
         internalType: "uint256",
       },
       {
-        name: "soldTokens",
+        name: "remainingTokens",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "ethRaised",
         type: "uint256",
         internalType: "uint256",
       },
@@ -296,11 +250,6 @@ export default [
         name: "totalBidders",
         type: "uint256",
         internalType: "uint256",
-      },
-      {
-        name: "automationRegistryAddress",
-        type: "address",
-        internalType: "address",
       },
       {
         name: "auctioneerAddress",
@@ -336,6 +285,11 @@ export default [
         internalType: "uint256",
       },
       {
+        name: "soldTokens",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
         name: "timeRemaining",
         type: "uint256",
         internalType: "uint256",
@@ -359,6 +313,45 @@ export default [
   {
     type: "function",
     name: "getCurrentPrice",
+    inputs: [],
+    outputs: [
+      {
+        name: "",
+        type: "uint256",
+        internalType: "uint256",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "getFinalPrice",
+    inputs: [],
+    outputs: [
+      {
+        name: "",
+        type: "uint256",
+        internalType: "uint256",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "getRemainingTokens",
+    inputs: [],
+    outputs: [
+      {
+        name: "",
+        type: "uint256",
+        internalType: "uint256",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "getSoldTokens",
     inputs: [],
     outputs: [
       {
@@ -598,19 +591,6 @@ export default [
   },
   {
     type: "function",
-    name: "totalTokensSold",
-    inputs: [],
-    outputs: [
-      {
-        name: "",
-        type: "uint256",
-        internalType: "uint256",
-      },
-    ],
-    stateMutability: "view",
-  },
-  {
-    type: "function",
     name: "transferOwnership",
     inputs: [
       {
@@ -628,25 +608,6 @@ export default [
     inputs: [],
     outputs: [],
     stateMutability: "nonpayable",
-  },
-  {
-    type: "function",
-    name: "userBids",
-    inputs: [
-      {
-        name: "",
-        type: "address",
-        internalType: "address",
-      },
-    ],
-    outputs: [
-      {
-        name: "",
-        type: "uint256",
-        internalType: "uint256",
-      },
-    ],
-    stateMutability: "view",
   },
   {
     type: "function",
@@ -707,25 +668,6 @@ export default [
   },
   {
     type: "event",
-    name: "AutomationRegistryUpdated",
-    inputs: [
-      {
-        name: "oldRegistry",
-        type: "address",
-        indexed: false,
-        internalType: "address",
-      },
-      {
-        name: "newRegistry",
-        type: "address",
-        indexed: false,
-        internalType: "address",
-      },
-    ],
-    anonymous: false,
-  },
-  {
-    type: "event",
     name: "Bid",
     inputs: [
       {
@@ -736,12 +678,6 @@ export default [
       },
       {
         name: "ethAmount",
-        type: "uint256",
-        indexed: false,
-        internalType: "uint256",
-      },
-      {
-        name: "tokenAmount",
         type: "uint256",
         indexed: false,
         internalType: "uint256",
@@ -860,11 +796,6 @@ export default [
   },
   {
     type: "error",
-    name: "BidQuantityTooHigh",
-    inputs: [],
-  },
-  {
-    type: "error",
     name: "EnforcedPause",
     inputs: [],
   },
@@ -876,11 +807,6 @@ export default [
   {
     type: "error",
     name: "InitialPriceTooLow",
-    inputs: [],
-  },
-  {
-    type: "error",
-    name: "InvalidBidQuantity",
     inputs: [],
   },
   {

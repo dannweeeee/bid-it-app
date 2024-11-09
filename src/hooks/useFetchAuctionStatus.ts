@@ -9,6 +9,7 @@ interface AuctionStatus {
   isEnded: boolean;
   currentTokenPrice: bigint;
   remainingTokens: bigint;
+  soldTokens: bigint;
   timeRemaining: bigint;
 }
 
@@ -37,6 +38,7 @@ export function useFetchAuctionStatus(auctionAddress: Address) {
           boolean,
           bigint,
           bigint,
+          bigint,
           bigint
         ];
 
@@ -45,7 +47,8 @@ export function useFetchAuctionStatus(auctionAddress: Address) {
           isEnded: status[1],
           currentTokenPrice: status[2],
           remainingTokens: status[3],
-          timeRemaining: status[4],
+          soldTokens: status[4],
+          timeRemaining: status[5],
         });
       } catch (err) {
         console.error("Failed to fetch auction status:", err);

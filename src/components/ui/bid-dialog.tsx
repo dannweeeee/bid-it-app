@@ -24,8 +24,7 @@ import { z } from "zod";
 import { useToast } from "@/hooks/useToast";
 import { type Config } from "wagmi";
 import { wagmiAdapter } from "@/config";
-import { Address } from "viem";
-import { calculateBid } from "@/scripts/bid-script";
+import { Address, parseEther } from "viem";
 import { writeContract, waitForTransactionReceipt } from "wagmi/actions";
 import DutchAuctionAbi from "@/abis/DutchAuctionAbi";
 import { BASE_SEPOLIA_CHAIN_ID } from "@/lib/constants";
@@ -36,8 +35,8 @@ interface BidDialogProps {
 }
 
 const bidSchema = z.object({
-  _quantity: z.coerce.number().positive({
-    message: "Quantity is required.",
+  _ethAmount: z.coerce.number().positive({
+    message: "ETH Amount is required.",
   }),
 });
 
@@ -46,7 +45,7 @@ const BidDialog = ({ contractAddress, walletAddress }: BidDialogProps) => {
   const bidForm = useForm<z.infer<typeof bidSchema>>({
     resolver: zodResolver(bidSchema),
     defaultValues: {
-      _quantity: undefined,
+      _ethAmount: undefined,
     },
   });
 
@@ -59,18 +58,15 @@ const BidDialog = ({ contractAddress, walletAddress }: BidDialogProps) => {
   const onSubmit = async (data: z.infer<typeof bidSchema>) => {
     setLoading(true);
     try {
-      const quantity = data._quantity;
-      console.log(quantity);
-      console.log(BigInt(quantity));
-      const price = await calculateBid(contractAddress, quantity);
-      console.log(price);
+      const ethAmount = data._ethAmount;
+      console.log(ethAmount);
+      const ethInWei = parseEther(ethAmount.toString());
       const bidTx = await writeContract(config, {
         address: contractAddress,
         abi: DutchAuctionAbi,
         functionName: "bid",
-        args: [BigInt(quantity)],
         chainId: BASE_SEPOLIA_CHAIN_ID,
-        value: BigInt(price),
+        value: BigInt(ethInWei),
       });
 
       console.log(bidTx);
@@ -81,7 +77,7 @@ const BidDialog = ({ contractAddress, walletAddress }: BidDialogProps) => {
 
       toast({
         title: "Bid submitted successfully",
-        description: `You bid for ${data._quantity} tokens`,
+        description: `You bid for ${data._ethAmount} tokens`,
       });
       setOpen(false);
     } catch (error) {
@@ -110,23 +106,23 @@ const BidDialog = ({ contractAddress, walletAddress }: BidDialogProps) => {
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold">Place Bid</DialogTitle>
           <DialogDescription className="text-gray-500">
-            Enter the quantity of tokens you want to bid for.
+            Enter the amount of ETH you want to commit to the auction
           </DialogDescription>
         </DialogHeader>
         <Form {...bidForm}>
           <form onSubmit={bidForm.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={bidForm.control}
-              name="_quantity"
+              name="_ethAmount"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-sm font-medium">
-                    Quantity
+                    ETH Amount
                   </FormLabel>
                   <FormControl>
                     <Input
                       type="number"
-                      placeholder="Enter quantity"
+                      placeholder="Enter ETH Amount"
                       className="rounded-lg [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                       disabled={loading}
                       {...field}

@@ -338,32 +338,6 @@ export default [
     anonymous: false,
   },
   {
-    type: "event",
-    name: "AuctionPaused",
-    inputs: [
-      {
-        name: "auctionAddress",
-        type: "address",
-        indexed: true,
-        internalType: "address",
-      },
-    ],
-    anonymous: false,
-  },
-  {
-    type: "event",
-    name: "AuctionUnpaused",
-    inputs: [
-      {
-        name: "auctionAddress",
-        type: "address",
-        indexed: true,
-        internalType: "address",
-      },
-    ],
-    anonymous: false,
-  },
-  {
     type: "error",
     name: "AuctionNotFound",
     inputs: [],
