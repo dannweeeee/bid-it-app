@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <main className="pt-28 min-h-screen">
       <PageContainer scrollable={true}>
-        <div className="space-y-2 pb-10">
+        <div className="space-y-2">
           <Tabs defaultValue="live-auctions" className="space-y-4 pt-10">
             <div className="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0">
               <TabsList className="w-full sm:w-auto">

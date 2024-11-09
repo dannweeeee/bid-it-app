@@ -5,6 +5,7 @@ import Navbar from "@/components/layout/navbar";
 import ContextProvider from "@/context";
 import { headers } from "next/headers";
 import { Toaster } from "@/components/ui/toaster";
+import Footer from "@/components/layout/footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.className} overflow-hidden `}
+        className={`${inter.className} bg-[#EAEAEA]`}
         suppressHydrationWarning={true}
       >
         <ContextProvider cookies={cookies}>
@@ -31,6 +32,7 @@ export default function RootLayout({
             <Navbar />
             {children}
             <Toaster />
+            <Footer />
           </main>
         </ContextProvider>
       </body>

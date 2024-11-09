@@ -167,7 +167,7 @@ export function CompletedAuctionCard({ address }: AuctionCardProps) {
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 gap-3 mb-6">
-          <div className="flex items-center gap-2 bg-slate-100 p-2 sm:p-3 rounded-lg">
+          <div className="flex items-center gap-2 bg-[#EAEAEA] p-2 sm:p-3 rounded-lg">
             <Coins className="h-4 w-4 text-slate-600 flex-shrink-0" />
             <div className="min-w-0">
               <p className="text-xs sm:text-sm text-slate-600">Final Price</p>
@@ -180,7 +180,7 @@ export function CompletedAuctionCard({ address }: AuctionCardProps) {
               )}
             </div>
           </div>
-          <div className="flex items-center gap-2 bg-slate-100 p-2 sm:p-3 rounded-lg">
+          <div className="flex items-center gap-2 bg-[#EAEAEA] p-2 sm:p-3 rounded-lg">
             <BadgeCent className="h-4 w-4 text-slate-600 flex-shrink-0" />
             <div className="min-w-0">
               <p className="text-xs sm:text-sm text-slate-600">Tokens Sold</p>
@@ -193,7 +193,7 @@ export function CompletedAuctionCard({ address }: AuctionCardProps) {
               )}
             </div>
           </div>
-          <div className="flex items-center gap-2 bg-slate-100 p-2 sm:p-3 rounded-lg">
+          <div className="flex items-center gap-2 bg-[#EAEAEA] p-2 sm:p-3 rounded-lg">
             <Flame className="h-4 w-4 text-slate-600 flex-shrink-0" />
             <div className="min-w-0">
               <p className="text-xs sm:text-sm text-slate-600">Tokens Burned</p>
