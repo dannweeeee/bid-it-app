@@ -1,6 +1,6 @@
 # Bid It dApp
 
-Dutch Auction for Token ICOs dApp built on Base Sepolia, powered by Chainlink Automation.
+Dutch Auction for Token ICOs dApp built on Base Sepolia, powered by Chainlink Automation. Live Website on https://usebidit.vercel.app
 
 ## Features
 
