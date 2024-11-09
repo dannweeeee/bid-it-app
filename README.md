@@ -11,7 +11,9 @@ Dutch Auction for Token ICOs dApp built on Base Sepolia, powered by Chainlink Au
 
 ## Prerequisites
 
-When testing, make sure your wallet have Base Sepolia ETH and LINK tokens (if you are creating your own auction).
+- [Metamask Wallet](https://metamask.io/)
+- [Base Sepolia ETH](https://www.alchemy.com/faucets/base-sepolia)
+- [LINK Tokens](https://faucets.chain.link/) (For creating of Auction)
 
 ## Getting Started
 
@@ -22,6 +24,23 @@ npm install
 ```bash
 npm run dev
 ```
+
+### For Auctioneers
+
+#### Create Auction
+1. Click on `Create Auction` Button
+2. Approve 1 `LINK` Token
+3. Confirm Auction Creation
+
+#### Start Auction
+1. Click on `Start` Button
+
+### For Bidders
+
+#### Bid Auction
+1. Click on `Place Bid` Button
+2. Enter the amount of `ETH` you wish to commit (Ensure you have enough ETH in your wallet)
+3. Confirm Bid
 
 ## Links
 
