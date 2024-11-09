@@ -133,6 +133,13 @@ export function LiveAuctionCard({ address }: AuctionCardProps) {
   };
 
   const formatTimeRemaining = (seconds: number) => {
+    if (!auctionStatus?.isStarted) {
+      return (
+        <p className="text-muted-foreground text-sm w-full">
+          Auction has not started
+        </p>
+      );
+    }
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
     return `${minutes}m ${remainingSeconds}s`;
