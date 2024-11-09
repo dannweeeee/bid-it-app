@@ -10,9 +10,11 @@ import { useToast } from "@/hooks/useToast";
 const WithdrawEthButton = ({
   contractAddress,
   walletAddress,
+  isWithdrawn,
 }: {
   contractAddress: Address;
   walletAddress: Address;
+  isWithdrawn: boolean;
 }) => {
   const config = wagmiAdapter.wagmiConfig as Config;
   const { toast } = useToast();
@@ -52,6 +54,7 @@ const WithdrawEthButton = ({
       variant="default"
       size="sm"
       className="min-w-[120px] text-white rounded-xl hover:bg-black/70 hover:text-white hover:scale-105 transition ease-in-out disabled:bg-black-opacity-30"
+      disabled={isWithdrawn}
     >
       Withdraw ETH
     </Button>

@@ -23,16 +23,18 @@ import { useFetchTokensRemaining } from "@/hooks/useFetchTokensRemaining";
 import { useFetchFinalPrice } from "@/hooks/useFetchFinalPrice";
 import { Skeleton } from "./skeleton";
 import { useEffect, useState } from "react";
+import { useCheckWithdrawnEth } from "@/hooks/useCheckWithdrawnEth";
 
 interface AuctionCardProps {
   address: Address;
 }
 
 export function CompletedAuctionCard({ address }: AuctionCardProps) {
+  const account = useAccount();
+  const isWithdrawn = useCheckWithdrawnEth(address, account.address as Address);
   const tokensSold = useFetchTokensSold(address);
   const tokensRemaining = useFetchTokensRemaining(address);
   const finalPrice = useFetchFinalPrice(address);
-  const account = useAccount();
   const tokenDetails = useFetchTokenDetails(address);
   const priceIntervals = useFetchAuctionPriceIntervals(address);
   const auctionStatus = useFetchAuctionStatus(address);
@@ -166,7 +168,7 @@ export function CompletedAuctionCard({ address }: AuctionCardProps) {
         </div>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 gap-3 mb-6">
+        <div className="grid grid-cols-1 gap-3">
           <div className="flex items-center gap-2 bg-[#EAEAEA] p-2 sm:p-3 rounded-lg hover:bg-[#EAEAEA]/70">
             <Coins className="h-4 w-4 text-slate-600 flex-shrink-0" />
             <div className="min-w-0">
@@ -208,14 +210,20 @@ export function CompletedAuctionCard({ address }: AuctionCardProps) {
           </div>
         </div>
       </CardContent>
-      <CardFooter className="flex flex-col gap-3">
+      <CardFooter className="flex flex-col">
         {isOwner && auctionStatus?.isEnded && (
           <div className="flex-shrink-0">
             <WithdrawEthButton
               contractAddress={address}
               walletAddress={account.address as Address}
+              isWithdrawn={isWithdrawn}
             />
           </div>
+        )}
+        {!isOwner && auctionStatus?.isEnded && (
+          <p className="text-xs text-gray-500 italic">
+            Your tokens will be automatically airdropped to your wallet.
+          </p>
         )}
       </CardFooter>
     </Card>

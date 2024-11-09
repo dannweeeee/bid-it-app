@@ -188,6 +188,19 @@ export default [
   },
   {
     type: "function",
+    name: "ethWithdrawn",
+    inputs: [],
+    outputs: [
+      {
+        name: "",
+        type: "bool",
+        internalType: "bool",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
     name: "getAuctionStatistics",
     inputs: [],
     outputs: [
@@ -442,6 +455,19 @@ export default [
         internalType: "address",
       },
     ],
+    outputs: [
+      {
+        name: "",
+        type: "bool",
+        internalType: "bool",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "isEthWithdrawn",
+    inputs: [],
     outputs: [
       {
         name: "",
