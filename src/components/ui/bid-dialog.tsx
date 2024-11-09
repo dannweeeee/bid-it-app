@@ -28,6 +28,7 @@ import { Address, parseEther } from "viem";
 import { writeContract, waitForTransactionReceipt } from "wagmi/actions";
 import DutchAuctionAbi from "@/abis/DutchAuctionAbi";
 import { BASE_SEPOLIA_CHAIN_ID } from "@/lib/constants";
+import { PacmanLoader } from "react-spinners";
 
 interface BidDialogProps {
   contractAddress: Address;
@@ -140,7 +141,13 @@ const BidDialog = ({ contractAddress, walletAddress }: BidDialogProps) => {
                 className="w-full bg-black hover:bg-black/80 text-white rounded-lg py-2"
                 disabled={loading}
               >
-                {loading ? "Submitting Bid..." : "Submit Bid"}
+                {loading ? (
+                  <>
+                    Submitting Bid <PacmanLoader size={10} color="#FFFFFF" />
+                  </>
+                ) : (
+                  "Submit Bid"
+                )}
               </Button>
             </DialogFooter>
           </form>

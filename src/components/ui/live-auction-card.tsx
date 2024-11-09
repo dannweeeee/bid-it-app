@@ -208,7 +208,7 @@ export function LiveAuctionCard({ address }: AuctionCardProps) {
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 gap-3 mb-6">
-          <div className="flex items-center gap-2 bg-[#EAEAEA] p-2 sm:p-3 rounded-lg hover:bg-slate-200 transition-colors">
+          <div className="flex items-center gap-2 bg-[#EAEAEA] p-2 sm:p-3 rounded-lg hover:bg-[#EAEAEA]/70  transition-colors">
             <Coins className="h-4 w-4 text-slate-600 flex-shrink-0" />
             <div className="min-w-0">
               <p className="text-xs sm:text-sm text-slate-600">Current Price</p>
@@ -220,7 +220,7 @@ export function LiveAuctionCard({ address }: AuctionCardProps) {
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2 bg-[#EAEAEA] p-2 sm:p-3 rounded-lg hover:bg-slate-200 transition-colors">
+          <div className="flex items-center gap-2 bg-[#EAEAEA] p-2 sm:p-3 rounded-lg hover:bg-[#EAEAEA]/70 transition-colors">
             <Package className="h-4 w-4 text-slate-600 flex-shrink-0" />
             <div className="min-w-0">
               <p className="text-xs sm:text-sm text-slate-600">
@@ -231,7 +231,7 @@ export function LiveAuctionCard({ address }: AuctionCardProps) {
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2 bg-[#EAEAEA] p-2 sm:p-3 rounded-lg hover:bg-slate-200 transition-colors">
+          <div className="flex items-center gap-2 bg-[#EAEAEA] p-2 sm:p-3 rounded-lg hover:bg-[#EAEAEA]/70 transition-colors">
             <Package className="h-4 w-4 text-slate-600 flex-shrink-0" />
             <div className="min-w-0">
               <p className="text-xs sm:text-sm text-slate-600">Sold Tokens</p>
@@ -240,7 +240,7 @@ export function LiveAuctionCard({ address }: AuctionCardProps) {
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2 bg-[#EAEAEA] p-2 sm:p-3 rounded-lg hover:bg-slate-200 transition-colors">
+          <div className="flex items-center gap-2 bg-[#EAEAEA] p-2 sm:p-3 rounded-lg hover:bg-[#EAEAEA]/70 transition-colors">
             <Clock className="h-4 w-4 text-slate-600 flex-shrink-0" />
             <div className="min-w-0">
               <p className="text-xs sm:text-sm text-slate-600">
