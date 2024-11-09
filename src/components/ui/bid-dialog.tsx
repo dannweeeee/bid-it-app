@@ -96,8 +96,9 @@ const BidDialog = ({ contractAddress, walletAddress }: BidDialogProps) => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
-          className="py-2 px-5 bg-black text-white font-light rounded-xl hover:bg-black/70 hover:text-white hover:scale-105 transition ease-in-out disabled:bg-black-opacity-30"
-          variant="outline"
+          variant="default"
+          size="sm"
+          className="min-w-[120px] text-white rounded-xl hover:bg-black/70 hover:text-white hover:scale-105 transition ease-in-out disabled:bg-black-opacity-30"
         >
           Place Bid
         </Button>

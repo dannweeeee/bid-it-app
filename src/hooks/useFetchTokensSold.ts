@@ -33,7 +33,5 @@ export function useFetchTokensSold(contractAddress: Address) {
     }
   }, [contractAddress]);
 
-  console.log(tokensSold);
-
   return tokensSold;
 }

@@ -73,17 +73,25 @@ export function LiveAuctionCard({ address }: AuctionCardProps) {
   const formattedData =
     priceIntervals?.map((interval) => ({
       minute: interval.minute,
-      price: Number((Number(interval.price) / 1e18).toFixed(10)),
+      price: Number(interval.price) / 1e9, // Convert to Gwei
+      priceWei: Number(interval.price), // Keep original Wei value
     })) ?? [];
 
   const CustomTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
+      const priceGwei = payload[0].value;
+      const priceWei = payload[0].payload.priceWei;
+      const priceEth = priceWei / 1e18;
+
       return (
-        <div className="bg-background/80 backdrop-blur-sm border rounded-lg p-2 shadow-lg text-xs sm:text-sm sm:p-3">
-          <p className="font-medium">
-            Price: {payload[0].value.toFixed(18)} ETH
-          </p>
-          <p className="text-muted-foreground">
+        <div className="bg-background/80 backdrop-blur-sm border rounded-lg p-3 shadow-lg text-xs sm:text-sm min-w-[200px] sm:min-w-[250px]">
+          <p className="font-medium">Price:</p>
+          <div className="text-muted-foreground space-y-1">
+            <p>{priceWei} Wei</p>
+            <p>{priceGwei} Gwei</p>
+            <p>{priceEth} ETH</p>
+          </div>
+          <p className="text-muted-foreground mt-2">
             Time: {payload[0].payload.minute}m
           </p>
         </div>
@@ -270,10 +278,10 @@ export function LiveAuctionCard({ address }: AuctionCardProps) {
                   tickLine={false}
                   axisLine={false}
                   tickMargin={8}
-                  tickFormatter={(value) => `${value.toFixed(3)}`}
+                  tickFormatter={(value) => `${value} Gwei`}
                   stroke="hsl(var(--muted-foreground))"
                   fontSize={12}
-                  width={60}
+                  width={100}
                 />
                 <Tooltip
                   content={<CustomTooltip />}

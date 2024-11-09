@@ -1,15 +1,6 @@
 "use client";
 
 import { Flame, Coins, Copy, BadgeCent } from "lucide-react";
-import {
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  LineChart,
-  Line,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
 
 import {
   Card,
@@ -67,28 +58,6 @@ export function CompletedAuctionCard({ address }: AuctionCardProps) {
     tokensRemaining,
     finalPrice,
   ]);
-
-  const formattedData =
-    priceIntervals?.map((interval) => ({
-      minute: interval.minute,
-      price: Number((Number(interval.price) / 1e18).toFixed(10)),
-    })) ?? [];
-
-  const CustomTooltip = ({ active, payload }: any) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="bg-background/80 backdrop-blur-sm border rounded-lg p-2 shadow-lg text-xs sm:text-sm sm:p-3">
-          <p className="font-medium">
-            Price: {payload[0].value.toFixed(18)} ETH
-          </p>
-          <p className="text-muted-foreground">
-            Time: {payload[0].payload.minute}m
-          </p>
-        </div>
-      );
-    }
-    return null;
-  };
 
   const truncateAddress = (address: string) => {
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
@@ -201,27 +170,10 @@ export function CompletedAuctionCard({ address }: AuctionCardProps) {
           <div className="flex items-center gap-2 bg-slate-100 p-2 sm:p-3 rounded-lg">
             <Coins className="h-4 w-4 text-slate-600 flex-shrink-0" />
             <div className="min-w-0">
-              <p className="text-xs sm:text-sm text-slate-600">
-                Clearing Price
-              </p>
+              <p className="text-xs sm:text-sm text-slate-600">Final Price</p>
               {finalPrice !== undefined ? (
                 <p className="text-sm sm:text-base font-medium truncate">
                   {(Number(finalPrice) / 1e18).toFixed(10)} ETH
-                </p>
-              ) : (
-                <Skeleton className="h-5 w-24" />
-              )}
-            </div>
-          </div>
-          <div className="flex items-center gap-2 bg-slate-100 p-2 sm:p-3 rounded-lg">
-            <Flame className="h-4 w-4 text-slate-600 flex-shrink-0" />
-            <div className="min-w-0">
-              <p className="text-xs sm:text-sm text-slate-600">
-                Remaining Tokens
-              </p>
-              {tokensRemaining !== undefined ? (
-                <p className="text-sm sm:text-base font-medium truncate">
-                  {Number(tokensRemaining)}
                 </p>
               ) : (
                 <Skeleton className="h-5 w-24" />
@@ -241,67 +193,19 @@ export function CompletedAuctionCard({ address }: AuctionCardProps) {
               )}
             </div>
           </div>
-        </div>
-        <div className="w-full h-[250px] sm:h-[310px] -mx-4 sm:mx-0">
-          {formattedData.length > 0 ? (
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart
-                data={formattedData}
-                margin={{
-                  top: 20,
-                  right: 20,
-                  left: 0,
-                  bottom: 20,
-                }}
-              >
-                <CartesianGrid
-                  strokeDasharray="3 3"
-                  vertical={false}
-                  opacity={0.2}
-                />
-                <XAxis
-                  dataKey="minute"
-                  tickLine={false}
-                  axisLine={false}
-                  tickMargin={8}
-                  tickFormatter={(value) => `${value}m`}
-                  stroke="hsl(var(--muted-foreground))"
-                  fontSize={12}
-                  interval={0}
-                />
-                <YAxis
-                  tickLine={false}
-                  axisLine={false}
-                  tickMargin={8}
-                  tickFormatter={(value) => `${value.toFixed(3)}`}
-                  stroke="hsl(var(--muted-foreground))"
-                  fontSize={12}
-                  width={60}
-                />
-                <Tooltip
-                  content={<CustomTooltip />}
-                  cursor={{
-                    stroke: "hsl(var(--muted-foreground))",
-                    strokeWidth: 1,
-                    strokeDasharray: "3 3",
-                  }}
-                />
-                <Line
-                  dataKey="price"
-                  type="monotone"
-                  stroke="hsl(var(--chart-1))"
-                  strokeWidth={2}
-                  dot={{ fill: "hsl(var(--chart-1))", strokeWidth: 2, r: 3 }}
-                  activeDot={{ r: 5, fill: "hsl(var(--chart-1))" }}
-                  animationDuration={1000}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          ) : (
-            <div className="w-full h-full flex items-center justify-center">
-              <Skeleton className="w-full h-full" />
+          <div className="flex items-center gap-2 bg-slate-100 p-2 sm:p-3 rounded-lg">
+            <Flame className="h-4 w-4 text-slate-600 flex-shrink-0" />
+            <div className="min-w-0">
+              <p className="text-xs sm:text-sm text-slate-600">Tokens Burned</p>
+              {tokensRemaining !== undefined ? (
+                <p className="text-sm sm:text-base font-medium truncate">
+                  {Number(tokensRemaining)}
+                </p>
+              ) : (
+                <Skeleton className="h-5 w-24" />
+              )}
             </div>
-          )}
+          </div>
         </div>
       </CardContent>
       <CardFooter className="flex flex-col gap-3">
