@@ -78,7 +78,7 @@ const BidDialog = ({ contractAddress, walletAddress }: BidDialogProps) => {
 
       toast({
         title: "Bid submitted successfully",
-        description: `You bid for ${data._ethAmount} tokens`,
+        description: `You bid for ${data._ethAmount} ETH`,
       });
       setOpen(false);
     } catch (error) {
