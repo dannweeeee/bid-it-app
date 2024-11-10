@@ -32,6 +32,7 @@ const StartAuctionButton = ({
         description: "Auction started successfully",
         variant: "default",
       });
+      window.location.reload();
     } catch (error) {
       console.error("Error starting auction:", error);
       toast({

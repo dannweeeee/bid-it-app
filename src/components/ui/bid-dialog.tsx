@@ -81,6 +81,7 @@ const BidDialog = ({ contractAddress, walletAddress }: BidDialogProps) => {
         description: `You bid for ${data._ethAmount} tokens`,
       });
       setOpen(false);
+      window.location.reload();
     } catch (error) {
       console.log(error);
       toast({
