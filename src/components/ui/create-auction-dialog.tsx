@@ -142,7 +142,6 @@ export function CreateAuctionDialog() {
       });
 
       setOpen(false);
-      window.location.reload();
     } catch (error) {
       console.log(error);
       toast({

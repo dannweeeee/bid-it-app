@@ -37,7 +37,6 @@ const WithdrawEthButton = ({
         description:
           "You have successfully withdrawn your ETH from the auction",
       });
-      window.location.reload();
     } catch (error) {
       console.error("Error withdrawing ETH:", error);
       toast({

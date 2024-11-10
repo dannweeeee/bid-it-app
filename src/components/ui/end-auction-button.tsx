@@ -32,7 +32,6 @@ const EndAuctionButton = ({
         description: "Auction ended successfully",
         variant: "default",
       });
-      window.location.reload();
     } catch (error) {
       console.error("Error ending auction:", error);
       toast({
